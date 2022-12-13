@@ -31,7 +31,7 @@ class PlacesRecyclerViewAdapter(private val context : Context,
         val placeItem = places[position]
 
         holder.titleTextView.text = placeItem.title
-        holder.addressTextView.text = placeItem.adress
+        holder.addressTextView.text = placeItem.address
         holder.descriptionTextView.text = placeItem.description
         holder.placeImageView.setImageResource(placeItem.image)
         holder.ratingView.rating = placeItem.rating

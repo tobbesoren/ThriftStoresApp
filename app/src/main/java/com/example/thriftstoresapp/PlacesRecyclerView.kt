@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class PlacesRecyclerView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +37,13 @@ class PlacesRecyclerView : AppCompatActivity() {
                 "Mycket grejor!",
                 3.5f,
                 R.drawable.ic_android_black_24dp))
+
+        val addButton = findViewById<FloatingActionButton>(R.id.floatingActionButton)
+        addButton.setOnClickListener {
+            val intent = Intent(this, AddPlace::class.java)
+            startActivity(intent)
+        }
+
 
         val recyclerView = findViewById<RecyclerView>(R.id.placesRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
