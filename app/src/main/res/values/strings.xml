@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ThriftStoresApp</string>
+    <string name="log_in">Log in</string>
+    <string name="create_user">Create user</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
+    <string name="title">Title</string>
+    <string name="adress">Adress</string>
+    <string name="picture_of_place">Picture of place</string>
+</resources>

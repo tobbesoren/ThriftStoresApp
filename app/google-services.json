@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "765546168789",
+    "project_id": "thriftstoresapp",
+    "storage_bucket": "thriftstoresapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:765546168789:android:269c62b9bbafa946c7fd5c",
+        "android_client_info": {
+          "package_name": "com.example.thriftstoresapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "765546168789-809vb3of2ornc4cms95pneaaiq3f8249.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQaH-fRo_nWdfQ0WoqLP-aOamtrrsZORY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "765546168789-809vb3of2ornc4cms95pneaaiq3f8249.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
