@@ -3,10 +3,13 @@ package com.example.thriftstoresapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class PlacesRecyclerView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +40,12 @@ class PlacesRecyclerView : AppCompatActivity() {
                 "Mycket grejor!",
                 3.5f,
                 R.drawable.ic_android_black_24dp))
+
+        val db = Firebase.firestore
+
+        //db.collection("places").add(places[0]).addOnCompleteListener() {documentReference ->
+            //Log.d("!!!!", "${documentReference.exception}")
+        //}
 
         val addButton = findViewById<FloatingActionButton>(R.id.floatingActionButton)
         addButton.setOnClickListener {
