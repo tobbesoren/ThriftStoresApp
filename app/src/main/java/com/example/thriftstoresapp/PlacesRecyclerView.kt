@@ -47,7 +47,7 @@ class PlacesRecyclerView : AppCompatActivity() {
                if(item != null) {
                    Log.d("!!!!", "Ohoj")
                    places.add(item)
-                   Log.d("!!!!", "${item.image}")
+                   Log.d("!!!!", "${item.id}")
                }
            }
             //Lets the Adapter handle the places.

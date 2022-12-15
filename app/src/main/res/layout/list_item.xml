@@ -53,8 +53,8 @@
 
     <TextView
         android:id="@+id/shortDescriptiontTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="105dp"
+        android:layout_height="99dp"
         android:layout_marginEnd="50dp"
         android:text="Short description"
         app:layout_constraintEnd_toEndOf="parent"

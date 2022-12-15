@@ -10,4 +10,8 @@
     <string name="name_of_store">Name of store</string>
     <string name="description">Description</string>
     <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="street">Street</string>
+    <string name="postal_code">Postal code</string>
+    <string name="city">City</string>
 </resources>
