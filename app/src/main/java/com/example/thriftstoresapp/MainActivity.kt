@@ -40,6 +40,11 @@ class MainActivity : AppCompatActivity() {
             createUser()
         }
 
+        val mapButton = findViewById<Button>(R.id.mapButton)
+        mapButton.setOnClickListener {
+            goToMaps()
+        }
+
     }
 
     private fun createUser() {
@@ -93,5 +98,10 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, PlacesRecyclerView::class.java)
         startActivity(intent)
 
+    }
+
+    private fun goToMaps() {
+        val intent = Intent(this, MapsActivity::class.java)
+        startActivity(intent)
     }
 }

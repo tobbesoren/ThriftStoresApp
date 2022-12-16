@@ -50,7 +50,7 @@ class AddPlace : AppCompatActivity() {
                     goToPlaces()
                 }
             } else {
-                Toast.makeText(this, "You must enter a title and an adress.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "You must enter a title and an address.", Toast.LENGTH_SHORT).show()
             }
 
         }
