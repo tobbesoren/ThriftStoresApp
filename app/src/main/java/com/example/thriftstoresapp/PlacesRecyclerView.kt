@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -15,7 +16,7 @@ import com.google.firebase.ktx.Firebase
 
 class PlacesRecyclerView : AppCompatActivity() {
 
-    val places = mutableListOf<PlaceItem>()
+    private val places = mutableListOf<PlaceItem>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,8 +54,7 @@ class PlacesRecyclerView : AppCompatActivity() {
             //Lets the Adapter handle the places.
             val adapter = PlacesRecyclerViewAdapter(this, places)
             recyclerView.adapter = adapter
-
-       }
+        }
 
 
         val addButton = findViewById<FloatingActionButton>(R.id.floatingActionButton)

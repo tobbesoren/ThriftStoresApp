@@ -1,6 +1,8 @@
 package com.example.thriftstoresapp
 
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 
 class PlacesRecyclerViewAdapter(private val context : Context,
@@ -37,6 +40,13 @@ class PlacesRecyclerViewAdapter(private val context : Context,
         holder.ratingView.rating = placeItem.rating
         Log.d("!!!!", "onBindViewHolder")
 
+        Log.d("!!!!", "ViewHolder init")
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, InfoActivity::class.java)
+            intent.putExtra("itemID", holder.itemId)
+            startActivity(context, intent, Bundle(1024))
+        }
+
     }
 
     override fun getItemCount(): Int {
@@ -52,9 +62,15 @@ class PlacesRecyclerViewAdapter(private val context : Context,
         val placeImageView = itemView.findViewById<ImageView>(R.id.placeImageView)!!
         val ratingView = itemView.findViewById<RatingBar>(R.id.ratingBar)!!
 
+
         init {
-            Log.d("!!!!", "ViewHolder init")
+
+            }
         }
 
+
+
+
     }
-}
+
+

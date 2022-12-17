@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/infoImageView" />
 
     <RatingBar
-        android:id="@+id/InfoRatingBar"
+        android:id="@+id/infoRatingBar"
         style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/pricing"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/InfoRatingBar" />
+        app:layout_constraintTop_toBottomOf="@+id/infoRatingBar" />
 
     <TextView
         android:id="@+id/infoAdressTextView"
@@ -64,17 +64,17 @@
         app:layout_constraintGuide_begin="205dp" />
 
     <TextView
-        android:id="@+id/infoCategorysTextView"
+        android:id="@+id/infoCategoriesTextView"
         android:layout_width="319dp"
         android:layout_height="51dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="16dp"
-        android:text="@string/categorys"
+        android:text="@string/categories"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoPricingTextView" />
 
     <TextView
-        android:id="@+id/InfoLatLongTextView"
+        android:id="@+id/infoLatLongTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -84,7 +84,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/infoMapButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
@@ -101,14 +101,14 @@
         android:layout_marginTop="16dp"
         android:text="@string/description"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoCategorysTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/infoCategoriesTextView" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/infoBackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Button"
+        android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
