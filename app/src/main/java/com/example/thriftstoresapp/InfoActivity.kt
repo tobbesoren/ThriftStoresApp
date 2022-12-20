@@ -3,6 +3,7 @@ package com.example.thriftstoresapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -37,6 +38,7 @@ class InfoActivity : AppCompatActivity() {
         latLongTextview = findViewById(R.id.infoLatLongTextView)
 
         val itemID = intent.getStringExtra("itemID").toString()
+        Log.d("!!!!", "itemID: $itemID")
         val item = db.collection("places")
             .document(itemID)
         item.get().addOnSuccessListener { document ->
