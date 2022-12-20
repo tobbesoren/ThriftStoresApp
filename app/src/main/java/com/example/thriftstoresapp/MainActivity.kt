@@ -40,11 +40,6 @@ class MainActivity : AppCompatActivity() {
             createUser()
         }
 
-        val mapButton = findViewById<Button>(R.id.mapButton)
-        mapButton.setOnClickListener {
-            goToMaps()
-        }
-
     }
 
     private fun createUser() {

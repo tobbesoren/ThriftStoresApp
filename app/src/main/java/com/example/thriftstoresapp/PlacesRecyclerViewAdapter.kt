@@ -43,8 +43,9 @@ class PlacesRecyclerViewAdapter(private val context : Context,
         Log.d("!!!!", "ViewHolder init")
         holder.itemView.setOnClickListener {
             val intent = Intent(context, InfoActivity::class.java)
-            intent.putExtra("itemID", holder.itemId)
-            startActivity(context, intent, Bundle(1024))
+            Log.d("!!!!", "onBind itemID: $placeItem.id")
+            intent.putExtra("itemID", placeItem.id)
+            context.startActivity(intent)
         }
 
     }
@@ -54,7 +55,7 @@ class PlacesRecyclerViewAdapter(private val context : Context,
         return places.size
     }
 
-    inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView : View): RecyclerView.ViewHolder(itemView) {
 
         val titleTextView = itemView.findViewById<TextView>(R.id.titleTextView)!!
         val addressTextView = itemView.findViewById<TextView>(R.id.addressTextView)!!
@@ -63,14 +64,12 @@ class PlacesRecyclerViewAdapter(private val context : Context,
         val ratingView = itemView.findViewById<RatingBar>(R.id.ratingBar)!!
 
 
-        init {
-
-            }
         }
 
 
 
 
     }
+
 
 

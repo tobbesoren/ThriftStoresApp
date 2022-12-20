@@ -1,7 +1,9 @@
 package com.example.thriftstoresapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -26,6 +28,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        val backButton = findViewById<Button>(R.id.mapsBackButton)
+        backButton.setOnClickListener {
+            val intent = Intent(this, PlacesRecyclerView::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     /**
