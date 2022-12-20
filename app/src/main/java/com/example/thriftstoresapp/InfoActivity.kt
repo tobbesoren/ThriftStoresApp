@@ -48,6 +48,8 @@ class InfoActivity : AppCompatActivity() {
                 addressTextView.text = place.address
                 ratingBar.rating = place.rating
                 descriptionTextView.text = place.description
+
+                latLongTextview.text = "lat: ${place.latitude}, lng: ${place.longitude}"
             } else {
                 Toast.makeText(this, "Couldn't load data", Toast.LENGTH_SHORT).show()
             }
