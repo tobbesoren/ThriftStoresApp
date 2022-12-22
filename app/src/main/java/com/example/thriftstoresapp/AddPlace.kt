@@ -11,7 +11,6 @@ import android.widget.EditText
 import android.widget.RatingBar
 import android.widget.Toast
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.io.IOException
@@ -52,7 +51,7 @@ class AddPlace : AppCompatActivity() {
                         "${cityEdit.text}"
                 val description = descriptionEdit.text.toString()
                 val rating = ratingBar.rating
-                val coordinates = getGeoPointFromAddress(address)
+                val coordinates = getCoordinatesFromAddress(address)
 
                 val place = PlaceItem(
                     title = title,
@@ -86,7 +85,7 @@ class AddPlace : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun getGeoPointFromAddress(currentAddress: String?): List<Double>? {
+    private fun getCoordinatesFromAddress(currentAddress: String?): List<Double>? {
         val geocoder = Geocoder(this)
         val addresses : List<Address>?
 
