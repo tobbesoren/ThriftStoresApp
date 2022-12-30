@@ -37,19 +37,13 @@ class PlacesRecyclerView : AppCompatActivity() {
 
         loadPlaces(selectedView)
 
-       /* db.collection("places").addSnapshotListener {snapshot, e ->
-            Log.d("!!!!", "Snapshot taken")
-            if(snapshot != null) {
-                places.clear()
-                for (document in snapshot.documents) {
-                    Log.d("!!!!", "Snapshot taken")
-                    val item = document.toObject<PlaceItem>()
-                    if (item != null) {
-                        places.add(item)
-                    }
-                }
-            }
-        }*/
+      
+        val logOutButton = findViewById<Button>(R.id.placesLogOutButton)
+        logOutButton.setOnClickListener {
+            val auth = Firebase.auth
+            auth.signOut()
+            goToLogIn()
+        }
 
         val selectButton = findViewById<Button>(R.id.selectButton)
         selectButton.text = "MyPlaces"
@@ -68,9 +62,18 @@ class PlacesRecyclerView : AppCompatActivity() {
 
         val addButton = findViewById<FloatingActionButton>(R.id.floatingActionButton)
         addButton.setOnClickListener {
-            val intent = Intent(this, AddPlace::class.java)
-            startActivity(intent)
+            goToAddPlace()
         }
+    }
+
+    private fun goToAddPlace() {
+        val intent = Intent(this, AddPlace::class.java)
+        startActivity(intent)
+    }
+
+    private fun goToLogIn() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
     private fun loadPlaces(selectedView: String) {
