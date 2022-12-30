@@ -22,4 +22,11 @@
     <string name="back">Back</string>
     <string name="log_out">Log out</string>
     <string name="select">Select</string>
+
+    <string-array name="sortBy">
+        <item>Name</item>
+        <item>Rating</item>
+        <item>Distance</item>
+        <item>Latest</item>
+    </string-array>
 </resources>
