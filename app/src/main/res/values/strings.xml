@@ -20,4 +20,6 @@
     <string name="map">Map</string>
     <string name="lat_long">Lat, long</string>
     <string name="back">Back</string>
+    <string name="log_out">Log out</string>
+    <string name="select">Select</string>
 </resources>

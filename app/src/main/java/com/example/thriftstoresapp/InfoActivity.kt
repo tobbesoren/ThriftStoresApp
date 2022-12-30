@@ -48,6 +48,17 @@ class InfoActivity : AppCompatActivity() {
                 addressTextView.text = place.address
                 ratingBar.rating = place.rating
                 descriptionTextView.text = place.description
+
+                latLongTextview.text = "lat: ${place.latitude}, lng: ${place.longitude}"
+                val mapButton = findViewById<Button>(R.id.infoMapButton)
+                mapButton.setOnClickListener {
+                    val intent = Intent(this, MapsActivity::class.java)
+                    intent.putExtra("latitude", place.latitude)
+                    intent.putExtra("longitude", place.longitude)
+                    intent.putExtra("shopName", place.title)
+                    startActivity(intent)
+                    finish()
+                }
             } else {
                 Toast.makeText(this, "Couldn't load data", Toast.LENGTH_SHORT).show()
             }
@@ -60,12 +71,7 @@ class InfoActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-        val mapButton = findViewById<Button>(R.id.infoMapButton)
-        mapButton.setOnClickListener {
-            val intent = Intent(this, MapsActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+
 
 
     }

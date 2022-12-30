@@ -26,10 +26,7 @@ class MainActivity : AppCompatActivity() {
         passwordEditText = findViewById(R.id.passwordEditText)
         auth = Firebase.auth
 
-        /*
-        TO DO:
-        If the user is already logged in, move directly to recycler view of places.
-         */
+        checkIfLoggedIn()
 
         val logInButton = findViewById<Button>(R.id.loginButton)
         logInButton.setOnClickListener {
@@ -95,8 +92,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun goToMaps() {
-        val intent = Intent(this, MapsActivity::class.java)
-        startActivity(intent)
+    private fun checkIfLoggedIn() {
+        if(auth.currentUser != null) {
+            goToPlaces()
+        }
     }
 }
