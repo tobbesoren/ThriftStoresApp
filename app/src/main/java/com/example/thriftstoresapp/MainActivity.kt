@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         createUserButton.setOnClickListener {
             createUser()
         }
-
+        Log.d("!!!!", R.drawable.ic_baseline_panorama_wide_angle_24.toString())
     }
 
     private fun createUser() {

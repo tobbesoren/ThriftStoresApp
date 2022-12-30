@@ -24,9 +24,15 @@
     <string name="select">Select</string>
 
     <string-array name="sortBy">
-        <item>Name</item>
-        <item>Rating</item>
-        <item>Distance</item>
-        <item>Latest</item>
+        <item>Sort by name</item>
+        <item>Sort by rating</item>
+        <item>Sort by distance</item>
+        <item>Sort by latest</item>
     </string-array>
+
+    <string-array name="selectView">
+        <item>View all thrift stores</item>
+        <item>View my thrift stores</item>
+    </string-array>
+
 </resources>

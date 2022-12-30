@@ -38,8 +38,7 @@ class PlacesRecyclerViewAdapter(private val context : Context,
         holder.titleTextView.text = placeItem.title
         holder.addressTextView.text = placeItem.address
         holder.descriptionTextView.text = placeItem.description
-        Toast.makeText(context, placeItem.image.toString(), Toast.LENGTH_SHORT).show()
-        holder.placeImageView.setImageResource(R.drawable.ic_baseline_panorama_wide_angle_24)
+        //holder.placeImageView.setImageResource(placeItem.image)
         holder.ratingView.rating = placeItem.rating
         holder.itemView.setOnClickListener {
             val intent = Intent(context, InfoActivity::class.java)
@@ -50,7 +49,6 @@ class PlacesRecyclerViewAdapter(private val context : Context,
     }
 
     override fun getItemCount(): Int {
-
         return places.size
     }
 

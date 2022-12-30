@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -20,16 +19,17 @@ class PlacesRecyclerView : AppCompatActivity() {
     
     private val places = mutableListOf<PlaceItem>()
     private val db = Firebase.firestore
-    lateinit var selectedView: String
-    lateinit var recyclerView: RecyclerView
     private val currentUser = Firebase.auth.currentUser?.uid.toString()
-    var sort = "Name"
+
+    lateinit var recyclerView: RecyclerView
+
+
+    var sort = "Sort by name"
+    var selectedView = "View all thrift stores"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_places_recycler_view)
-
-        selectedView = "AllPlaces"
 
 
         recyclerView = findViewById<RecyclerView>(R.id.placesRecyclerView)
@@ -46,7 +46,7 @@ class PlacesRecyclerView : AppCompatActivity() {
             goToLogIn()
         }
 
-        val selectButton = findViewById<Button>(R.id.selectButton)
+       /* val selectButton = findViewById<Button>(R.id.selectButton)
         selectButton.text = "MyPlaces"
         selectButton.setOnClickListener {
             if(selectedView == "AllPlaces") {
@@ -57,16 +57,32 @@ class PlacesRecyclerView : AppCompatActivity() {
                 selectButton.text = "MyPlaces"
             }
             loadPlaces(selectedView)
-        }
+        }*/
 
         val sortBy = resources.getStringArray(R.array.sortBy)
         val sortBySpinner = findViewById<Spinner>(R.id.sortBySpinner)
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, sortBy)
-        sortBySpinner.adapter = adapter
+        val sortAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, sortBy)
+        sortBySpinner.adapter = sortAdapter
 
         sortBySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 sort = sortBy[position]
+                loadPlaces(selectedView)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // write code to perform some action
+            }
+        }
+
+        val viewSelections = resources.getStringArray(R.array.selectView)
+        val selectViewSpinner = findViewById<Spinner>(R.id.selectViewSpinner)
+        val viewAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, viewSelections)
+        selectViewSpinner.adapter = viewAdapter
+
+        selectViewSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                selectedView = viewSelections[position]
                 loadPlaces(selectedView)
             }
 
@@ -93,14 +109,14 @@ class PlacesRecyclerView : AppCompatActivity() {
 
     private fun loadPlaces(selectedView: String) {
         when(selectedView) {
-            "AllPlaces" -> {
+            "View all thrift stores" -> {
                 db.collection("places").get().addOnSuccessListener { documentSnapShot ->
                 makeList(documentSnapShot)
                     sortList()
                     setAdapter()
                 }
             }
-            "MyPlaces" -> {
+            "View my thrift stores" -> {
                 db.collection("places").whereEqualTo("userUID", currentUser)
                     .get().addOnSuccessListener { documentSnapShot ->
                     makeList(documentSnapShot)
@@ -127,10 +143,10 @@ class PlacesRecyclerView : AppCompatActivity() {
     private fun sortList() {
         Toast.makeText(this, "Sorted by $sort", Toast.LENGTH_SHORT).show()
         when(sort) {
-            "Name" -> places.sortWith(compareBy { it.title })
-            "Rating" -> places.sortWith(compareByDescending { it.rating })
-            "Created" -> places.sortWith(compareBy { it.created })
-            "Distance" -> places.sortWith(compareByDescending { it.distance })
+            "Sort by name" -> places.sortWith(compareBy { it.title })
+            "Sort by rating" -> places.sortWith(compareByDescending { it.rating })
+            "Sort by latest" -> places.sortWith(compareBy { it.created })
+            "Sort by distance" -> places.sortWith(compareByDescending { it.distance })
         }
 
     }

@@ -58,9 +58,11 @@ class AddPlace : AppCompatActivity() {
                     address = address,
                     description = description,
                     rating = rating,
+                    image = R.drawable.ic_baseline_panorama_wide_angle_24,
                     latitude = coordinates?.get(0),
                     longitude = coordinates?.get(1),
                     userUID = auth.currentUser?.uid.toString()
+
                 )
 
                 db.collection("places").add(place).addOnSuccessListener {
