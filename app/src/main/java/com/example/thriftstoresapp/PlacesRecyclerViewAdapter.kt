@@ -10,8 +10,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+
 
 class PlacesRecyclerViewAdapter(private val context : Context,
                                 private val places : List<PlaceItem>)
@@ -24,7 +27,6 @@ class PlacesRecyclerViewAdapter(private val context : Context,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val itemView = layoutInflater.inflate(R.layout.list_item, parent, false)
-        Log.d("!!!!", "onCreateViewHolder")
         return ViewHolder(itemView)
 
     }
@@ -36,14 +38,11 @@ class PlacesRecyclerViewAdapter(private val context : Context,
         holder.titleTextView.text = placeItem.title
         holder.addressTextView.text = placeItem.address
         holder.descriptionTextView.text = placeItem.description
-        holder.placeImageView.setImageResource(placeItem.image)
+        Toast.makeText(context, placeItem.image.toString(), Toast.LENGTH_SHORT).show()
+        holder.placeImageView.setImageResource(R.drawable.ic_baseline_panorama_wide_angle_24)
         holder.ratingView.rating = placeItem.rating
-        Log.d("!!!!", "onBindViewHolder")
-
-        Log.d("!!!!", "ViewHolder init")
         holder.itemView.setOnClickListener {
             val intent = Intent(context, InfoActivity::class.java)
-            Log.d("!!!!", "onBind itemID: $placeItem.id")
             intent.putExtra("itemID", placeItem.id)
             context.startActivity(intent)
         }

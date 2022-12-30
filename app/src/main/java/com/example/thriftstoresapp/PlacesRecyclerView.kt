@@ -117,7 +117,7 @@ class PlacesRecyclerView : AppCompatActivity() {
         for (document in documentSnapShot.documents) {
             val item = document.toObject<PlaceItem>()
             if (item != null) {
-                Log.d("!!!!", "Ohoj")
+                Log.d("!!!!", item.toString())
                 places.add(item)
                 Log.d("!!!!", "${item.id}")
             }
@@ -130,7 +130,7 @@ class PlacesRecyclerView : AppCompatActivity() {
             "Name" -> places.sortWith(compareBy { it.title })
             "Rating" -> places.sortWith(compareByDescending { it.rating })
             "Created" -> places.sortWith(compareBy { it.created })
-            //"Distance" -> places.sortWith(compareByDescending { it.distance })
+            "Distance" -> places.sortWith(compareByDescending { it.distance })
         }
 
     }
