@@ -42,8 +42,7 @@ class PlacesRecyclerView : AppCompatActivity() {
 
         val logOutButton = findViewById<Button>(R.id.placesLogOutButton)
         logOutButton.setOnClickListener {
-            val auth = Firebase.auth
-            auth.signOut()
+            DataBaseHandler.auth.signOut()
             goToLogIn()
         }
 
