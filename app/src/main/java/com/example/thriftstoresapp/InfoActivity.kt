@@ -38,7 +38,7 @@ class InfoActivity : AppCompatActivity() {
         latLongTextview = findViewById(R.id.infoLatLongTextView)
 
         val itemID = intent.getStringExtra("itemID").toString()
-        Log.d("!!!!", "itemID: $itemID")
+
         val item = db.collection("places")
             .document(itemID)
         item.get().addOnSuccessListener { document ->
@@ -56,6 +56,7 @@ class InfoActivity : AppCompatActivity() {
                     intent.putExtra("latitude", place.latitude)
                     intent.putExtra("longitude", place.longitude)
                     intent.putExtra("shopName", place.title)
+
                     startActivity(intent)
                     finish()
                 }

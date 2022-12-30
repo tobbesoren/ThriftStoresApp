@@ -21,7 +21,7 @@ class PlacesRecyclerView : AppCompatActivity() {
     private val db = Firebase.firestore
     private val currentUser = Firebase.auth.currentUser?.uid.toString()
 
-    lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerView: RecyclerView
 
 
     var sort = "Sort by name"
@@ -32,7 +32,8 @@ class PlacesRecyclerView : AppCompatActivity() {
         setContentView(R.layout.activity_places_recycler_view)
 
 
-        recyclerView = findViewById<RecyclerView>(R.id.placesRecyclerView)
+
+        recyclerView = findViewById(R.id.placesRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
 
@@ -46,18 +47,6 @@ class PlacesRecyclerView : AppCompatActivity() {
             goToLogIn()
         }
 
-       /* val selectButton = findViewById<Button>(R.id.selectButton)
-        selectButton.text = "MyPlaces"
-        selectButton.setOnClickListener {
-            if(selectedView == "AllPlaces") {
-                selectedView = "MyPlaces"
-                selectButton.text = "AllPlaces"
-            } else {
-                selectedView = "AllPlaces"
-                selectButton.text = "MyPlaces"
-            }
-            loadPlaces(selectedView)
-        }*/
 
         val sortBy = resources.getStringArray(R.array.sortBy)
         val sortBySpinner = findViewById<Spinner>(R.id.sortBySpinner)
