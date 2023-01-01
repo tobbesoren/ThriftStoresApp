@@ -2,17 +2,12 @@ package com.example.thriftstoresapp
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
-import android.widget.Toast
-import androidx.annotation.DrawableRes
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 
 
@@ -39,10 +34,11 @@ class PlacesRecyclerViewAdapter(private val context : Context,
         holder.addressTextView.text = placeItem.address
         holder.descriptionTextView.text = placeItem.description
         //holder.placeImageView.setImageResource(placeItem.image)
-        holder.ratingView.rating = placeItem.rating
+        holder.ratingView.rating = placeItem.rating!!
         holder.itemView.setOnClickListener {
             val intent = Intent(context, InfoActivity::class.java)
-            intent.putExtra("itemID", placeItem.id)
+            LocalData.currentPlace = LocalData.placeList[position]
+            //intent.putExtra("itemID", placeItem.id)
             context.startActivity(intent)
         }
 

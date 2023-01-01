@@ -17,8 +17,9 @@ import com.google.firebase.ktx.Firebase
 
 class PlacesRecyclerView : AppCompatActivity() {
     
-    private val places = mutableListOf<PlaceItem>()
+
     private val db = Firebase.firestore
+    private val auth = Firebase.auth
     private val currentUser = Firebase.auth.currentUser?.uid.toString()
 
     private lateinit var recyclerView: RecyclerView
@@ -42,7 +43,7 @@ class PlacesRecyclerView : AppCompatActivity() {
 
         val logOutButton = findViewById<Button>(R.id.placesLogOutButton)
         logOutButton.setOnClickListener {
-            DataBaseHandler.auth.signOut()
+            auth.signOut()
             goToLogIn()
         }
 
@@ -117,12 +118,12 @@ class PlacesRecyclerView : AppCompatActivity() {
     }
 
     private fun makeList(documentSnapShot: QuerySnapshot) {
-        places.clear()
+        LocalData.placeList.clear()
         for (document in documentSnapShot.documents) {
             val item = document.toObject<PlaceItem>()
             if (item != null) {
                 Log.d("!!!!", item.toString())
-                places.add(item)
+                LocalData.placeList.add(item)
                 Log.d("!!!!", "${item.id}")
             }
         }
@@ -131,17 +132,17 @@ class PlacesRecyclerView : AppCompatActivity() {
     private fun sortList() {
         Toast.makeText(this, "Sorted by $sort", Toast.LENGTH_SHORT).show()
         when(sort) {
-            "Sort by name" -> places.sortWith(compareBy { it.title })
-            "Sort by rating" -> places.sortWith(compareByDescending { it.rating })
-            "Sort by latest" -> places.sortWith(compareBy { it.created })
-            "Sort by distance" -> places.sortWith(compareByDescending { it.distance })
+            "Sort by name" -> LocalData.placeList.sortWith(compareBy { it.title })
+            "Sort by rating" -> LocalData.placeList.sortWith(compareByDescending { it.rating })
+            "Sort by latest" -> LocalData.placeList.sortWith(compareBy { it.created })
+            "Sort by distance" -> LocalData.placeList.sortWith(compareByDescending { it.distance })
         }
 
     }
 
     private fun setAdapter() {
         //Lets the Adapter handle the places.
-        val adapter = PlacesRecyclerViewAdapter(this, places)
+        val adapter = PlacesRecyclerViewAdapter(this, LocalData.placeList)
         recyclerView.adapter = adapter
     }
 }
