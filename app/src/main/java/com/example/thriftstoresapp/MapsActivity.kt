@@ -46,13 +46,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        val latitude = intent.getDoubleExtra("latitude", 0.0)
-        val longitude = intent.getDoubleExtra("longitude", 0.0)
-        val shopName = intent.getStringExtra("shopName")
+        val latitude = LocalData.currentPlace?.latitude
+        val longitude = LocalData.currentPlace?.longitude
+        val shopName = LocalData.currentPlace?.title
 
-        // Add a marker in Sydney and move the camera
-        val place = LatLng(latitude, longitude)
-        mMap.addMarker(MarkerOptions().position(place).title("$shopName"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 15f))
+        // Add a marker at the shop
+        if(latitude != null && longitude != null) {
+            val place = LatLng(latitude, longitude)
+            mMap.addMarker(MarkerOptions().position(place).title("$shopName"))
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 15f))
+        }
     }
 }
