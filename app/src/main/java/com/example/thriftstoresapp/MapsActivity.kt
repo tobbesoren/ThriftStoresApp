@@ -37,7 +37,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val backButton = findViewById<Button>(R.id.mapsBackButton)
         backButton.setOnClickListener {
-            val intent = Intent(this, PlacesRecyclerView::class.java)
+            val intent = Intent(this, PlacesRecyclerViewActivity::class.java)
             startActivity(intent)
             finish()
         }

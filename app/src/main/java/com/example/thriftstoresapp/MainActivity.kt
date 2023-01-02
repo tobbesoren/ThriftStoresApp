@@ -26,7 +26,14 @@ class MainActivity : AppCompatActivity() {
         passwordEditText = findViewById(R.id.passwordEditText)
         auth = Firebase.auth
 
+        /*
+        If a user is already logged in, we move directly to PlacesRecyclerView
+         */
         checkIfLoggedIn()
+
+        /*
+        Lets set up the buttons!
+         */
 
         val logInButton = findViewById<Button>(R.id.loginButton)
         logInButton.setOnClickListener {
@@ -36,12 +43,21 @@ class MainActivity : AppCompatActivity() {
         createUserButton.setOnClickListener {
             createUser()
         }
-        Log.d("!!!!", R.drawable.ic_baseline_panorama_wide_angle_24.toString())
+
     }
+
+    /*
+    If the create user button is clicked, we try to create a new user, and login.
+     */
 
     private fun createUser() {
         val email = emailEditText.text.toString()
         val password = passwordEditText.text.toString()
+
+        /*
+        Check to see if the user has entered e-mail and desired password. Returns early if that is
+        not the case (and displays a Toast)
+        */
 
         if(email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Enter e-mail and password to set up user",
@@ -49,6 +65,10 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+        /*
+        Tries to create a user. Shows a Toast on completion, which tells the user if the operation
+        was successful or not.
+         */
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if(task.isSuccessful) {
@@ -63,16 +83,26 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    /*
+    Called when the login button is clicked. Uses the entered e-mail and password to log in the
+    user.
+     */
     private fun login() {
         val email = emailEditText.text.toString()
         val password = passwordEditText.text.toString()
 
+        /*
+        If the user hasn't entered email and/or password, we return early and get some Toast.
+         */
         if(email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Enter e-mail and password to log in",
                 Toast.LENGTH_SHORT).show()
             return
         }
 
+        /*
+        Tries to login. Have some Toast!
+         */
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if(task.isSuccessful) {
@@ -86,12 +116,19 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    /*
+    Starts PlacesRecyclerViewActivity.
+     */
     private fun goToPlaces() {
-        val intent = Intent(this, PlacesRecyclerView::class.java)
+        val intent = Intent(this, PlacesRecyclerViewActivity::class.java)
         startActivity(intent)
 
     }
 
+
+    /*
+    If a user is logged in, move directly to PlacesRecyclerViewActivity.
+     */
     private fun checkIfLoggedIn() {
         if(auth.currentUser != null) {
             goToPlaces()

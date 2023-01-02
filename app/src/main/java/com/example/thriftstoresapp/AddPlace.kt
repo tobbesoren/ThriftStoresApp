@@ -13,7 +13,6 @@ import android.widget.Toast
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.io.IOException
 
 class AddPlace : AppCompatActivity() {
 
@@ -23,6 +22,9 @@ class AddPlace : AppCompatActivity() {
     lateinit var cityEdit: EditText
     lateinit var descriptionEdit: EditText
     lateinit var ratingBar: RatingBar
+
+    private val auth = Firebase.auth
+    private val db = Firebase.firestore
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,39 +38,14 @@ class AddPlace : AppCompatActivity() {
         descriptionEdit = findViewById(R.id.descriptionEditText)
         ratingBar = findViewById(R.id.ratingBarEdit)
 
-        val auth = Firebase.auth
 
-
-        val db = Firebase.firestore
 
         val saveButton = findViewById<Button>(R.id.saveButton)
 
         saveButton.setOnClickListener {
+
             if(nameEdit.text.isNotEmpty() && cityEdit.text.isNotEmpty()) {
-                val title = nameEdit.text.toString()
-                val address = "${streetEdit.text}\n" +
-                        "${postalCodeEdit.text}\n" +
-                        "${cityEdit.text}"
-                val description = descriptionEdit.text.toString()
-                val rating = ratingBar.rating
-                val coordinates = getCoordinatesFromAddress(address)
-
-                val place = PlaceItem(
-                    title = title,
-                    address = address,
-                    description = description,
-                    rating = rating,
-                    image = R.drawable.ic_baseline_panorama_wide_angle_24,
-                    latitude = coordinates?.get(0),
-                    longitude = coordinates?.get(1),
-                    userUID = auth.currentUser?.uid.toString()
-
-                )
-
-                db.collection("places").add(place).addOnSuccessListener {
-                    Toast.makeText(this, "Place saved", Toast.LENGTH_SHORT).show()
-                    goToPlaces()
-                }
+                createPlace()
             } else {
                 Toast.makeText(this, "You must enter a title and an address.", Toast.LENGTH_SHORT).show()
             }
@@ -83,11 +60,62 @@ class AddPlace : AppCompatActivity() {
     }
 
     private fun goToPlaces() {
-        val intent = Intent(this, PlacesRecyclerView::class.java)
+        val intent = Intent(this, PlacesRecyclerViewActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
+    fun createPlace() {
+        val title = nameEdit.text.toString()
+        val address = "${streetEdit.text}\n" +
+                "${postalCodeEdit.text}\n" +
+                "${cityEdit.text}"
+        val description = descriptionEdit.text.toString()
+        val rating = ratingBar.rating
+
+
+        val coordinates = getCoordinatesFromAddress(address)
+
+
+        val place = PlaceItem(
+            title = title,
+            address = address,
+            description = description,
+            rating = rating,
+            image = R.drawable.ic_baseline_panorama_wide_angle_24,
+            latitude = coordinates?.get(0),
+            longitude = coordinates?.get(1),
+            userUID = auth.currentUser?.uid.toString()
+        )
+
+        db.collection("places").add(place).addOnCompleteListener { task ->
+            if(task.isSuccessful) {
+                Toast.makeText(this, "Place created", Toast.LENGTH_SHORT).show()
+                Log.d("!!!!", "createPlace successful")
+                goToPlaces()
+            } else {
+                Toast.makeText(this, "Place not created ${task.exception}",
+                    Toast.LENGTH_SHORT).show()
+                Log.d("!!!!", "Place not created ${task.exception}")
+            }
+        }
+
+        /*db.collection("places").add(place).addOnSuccessListener {
+            //Toast.makeText(this, "Place saved", Toast.LENGTH_SHORT).show()
+            goToPlaces()
+        }*/
+    }
+
+
+    /*
+    It seems like this only works on android api 26 or earlier. I should find a real solution!
+    Or perhaps it's the emulator acting up again.
+
+    Anyway, it tries to get the coordinates of currentAddress by using Geocoder.
+    If it succeeds, it returns the values as a List of Doubles. If not, null is returned.
+     */
     private fun getCoordinatesFromAddress(currentAddress: String?): List<Double>? {
+
         val geocoder = Geocoder(this)
         val addresses : List<Address>?
 
@@ -103,12 +131,17 @@ class AddPlace : AppCompatActivity() {
                 Log.d("!!!!", "Lat: $lat - Long: $long")
                 return listOf(lat, long)
             } else {
+                Toast.makeText(this, "No address found",
+                    Toast.LENGTH_SHORT).show()
+                Log.d("!!!!", "No address")
                 return null
             }
-        } catch(e: IOException) {
+        } catch(e: Exception) {
+            Toast.makeText(this, "Geocoder error: $e", Toast.LENGTH_SHORT).show()
+            Log.d("!!!!", e.toString())
             e.printStackTrace()
         }
-        Log.d("!!!!", "$currentAddress")
+        Log.d("!!!!", "How did we end up here? $currentAddress")
         return null
     }
 }

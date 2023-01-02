@@ -11,21 +11,27 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 
+/*
+The Adapter for the PlacesRecyclerView.
+ */
 class PlacesRecyclerViewAdapter(private val context : Context,
                                 private val places : List<PlaceItem>)
-    : RecyclerView.Adapter<PlacesRecyclerViewAdapter.ViewHolder>(){
+    : RecyclerView.Adapter<PlacesRecyclerViewAdapter.ViewHolder>() {
 
     private var layoutInflater = LayoutInflater.from(context)
 
 
-
+    /*
+    Returns a ViewHolder.
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
         val itemView = layoutInflater.inflate(R.layout.list_item, parent, false)
         return ViewHolder(itemView)
-
     }
 
+    /*
+    Sets the data to the views. Also, adds setOnClickListener to make the item clickable.
+     */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val placeItem = places[position]
@@ -35,34 +41,37 @@ class PlacesRecyclerViewAdapter(private val context : Context,
         holder.descriptionTextView.text = placeItem.description
         //holder.placeImageView.setImageResource(placeItem.image)
         holder.ratingView.rating = placeItem.rating!!
+
+        /*
+        When an item is clicked, InfoActivity is started.
+         */
         holder.itemView.setOnClickListener {
             val intent = Intent(context, InfoActivity::class.java)
             LocalData.currentPlace = LocalData.placeList[position]
-            //intent.putExtra("itemID", placeItem.id)
             context.startActivity(intent)
         }
 
     }
 
+    /*
+    Needed for binding ViewHolders. Returns the length of places (a List).
+     */
     override fun getItemCount(): Int {
         return places.size
     }
 
-    inner class ViewHolder(itemView : View): RecyclerView.ViewHolder(itemView) {
+    /*
+    Binds the Views to variables.
+     */
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val titleTextView = itemView.findViewById<TextView>(R.id.titleTextView)!!
         val addressTextView = itemView.findViewById<TextView>(R.id.addressTextView)!!
         val descriptionTextView = itemView.findViewById<TextView>(R.id.shortDescriptiontTextView)!!
         val placeImageView = itemView.findViewById<ImageView>(R.id.placeImageView)!!
         val ratingView = itemView.findViewById<RatingBar>(R.id.ratingBar)!!
-
-
-        }
-
-
-
-
     }
+}
 
 
 

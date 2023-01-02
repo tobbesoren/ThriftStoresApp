@@ -22,6 +22,7 @@
     <string name="back">Back</string>
     <string name="log_out">Log out</string>
     <string name="select">Select</string>
+    <string name="delete">Delete</string>
 
     <string-array name="sortBy">
         <item>Sort by name</item>
