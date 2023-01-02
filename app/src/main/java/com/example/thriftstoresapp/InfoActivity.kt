@@ -43,7 +43,7 @@ class InfoActivity : AppCompatActivity() {
         addressTextView = findViewById(R.id.infoAdressTextView)
         ratingBar = findViewById(R.id.infoRatingBar)
         pricingTextView = findViewById(R.id.infoPricingTextView)
-        categoriesTextView = findViewById(R.id.infoCategoriesTextView)
+        categoriesTextView = findViewById(R.id.infoOpeningHoursTextView)
         descriptionTextView = findViewById(R.id.infoDescriptionTextView)
         latLongTextview = findViewById(R.id.infoLatLongTextView)
 

@@ -174,7 +174,7 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
         when(sort) {
             "Sort by name" -> LocalData.placeList.sortWith(compareBy { it.title })
             "Sort by rating" -> LocalData.placeList.sortWith(compareByDescending { it.rating })
-            "Sort by latest" -> LocalData.placeList.sortWith(compareBy { it.created })
+            "Sort by latest" -> LocalData.placeList.sortWith(compareByDescending { it.created })
             "Sort by distance" -> LocalData.placeList.sortWith(compareByDescending { it.distance })
         }
 

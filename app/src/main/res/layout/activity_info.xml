@@ -33,28 +33,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoTitleTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/infoPricingTextView" />
 
     <TextView
         android:id="@+id/infoPricingTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:text="@string/pricing"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoRatingBar" />
+        app:layout_constraintTop_toBottomOf="@+id/infoOpeningHoursTextView" />
 
     <TextView
         android:id="@+id/infoAdressTextView"
-        android:layout_width="150dp"
-        android:layout_height="99dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="317dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="32dp"
         android:text="@string/address"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/infoImageView" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoTitleTextView" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -64,23 +64,23 @@
         app:layout_constraintGuide_begin="205dp" />
 
     <TextView
-        android:id="@+id/infoCategoriesTextView"
-        android:layout_width="319dp"
-        android:layout_height="51dp"
+        android:id="@+id/infoOpeningHoursTextView"
+        android:layout_width="317dp"
+        android:layout_height="21dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/categories"
+        android:layout_marginTop="12dp"
+        android:text="@string/opening_hours"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoPricingTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/infoAdressTextView" />
 
     <TextView
         android:id="@+id/infoLatLongTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginBottom="70dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="32dp"
         android:text="@string/lat_long"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/infoBackButton"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -96,13 +96,13 @@
 
     <TextView
         android:id="@+id/infoDescriptionTextView"
-        android:layout_width="321dp"
-        android:layout_height="221dp"
+        android:layout_width="314dp"
+        android:layout_height="163dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:text="@string/description"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoCategoriesTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/infoRatingBar" />
 
     <Button
         android:id="@+id/infoBackButton"

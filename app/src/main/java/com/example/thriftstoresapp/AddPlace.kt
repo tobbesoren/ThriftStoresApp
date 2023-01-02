@@ -1,36 +1,52 @@
 package com.example.thriftstoresapp
 
+import android.app.ProgressDialog
+import android.content.ContentResolver
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RatingBar
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 class AddPlace : AppCompatActivity() {
 
     /*
     Declaring variables for the Views.
      */
-    lateinit var nameEdit: EditText
-    lateinit var streetEdit: EditText
-    lateinit var postalCodeEdit: EditText
-    lateinit var cityEdit: EditText
-    lateinit var descriptionEdit: EditText
-    lateinit var ratingBar: RatingBar
+    private lateinit var nameEdit: EditText
+    private lateinit var addressEdit: EditText
+    private lateinit var openingHoursEdit: EditText
+    private lateinit var descriptionEdit: EditText
+    private lateinit var ratingBar: RatingBar
+    private lateinit var shopImageView: ImageView
+
+    /*
+    Lateinit price range.
+     */
+    lateinit var priceRange: String
+
+    private lateinit var imageRef: StorageReference
+
+    private lateinit var imageUri: Uri
 
     /*
     Declaring variables for login and database.
      */
     private val auth = Firebase.auth
     private val db = Firebase.firestore
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,12 +57,42 @@ class AddPlace : AppCompatActivity() {
         Some lateinit:ing (it IS a word!)
          */
         nameEdit = findViewById(R.id.nameEditText)
-        streetEdit = findViewById(R.id.streetEditText)
-        postalCodeEdit = findViewById(R.id.postalCodeEditText)
-        cityEdit = findViewById(R.id.cityEditText)
+        addressEdit = findViewById(R.id.addressEditText)
+        openingHoursEdit = findViewById(R.id.openingHoursEditText)
         descriptionEdit = findViewById(R.id.descriptionEditText)
         ratingBar = findViewById(R.id.ratingBarEdit)
+        shopImageView = findViewById(R.id.shopImageView)
 
+        val defaultDrawableResourceId = R.drawable.ic_baseline_panorama_wide_angle_24
+        imageUri = Uri.parse(
+            ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                    packageName + "/" + defaultDrawableResourceId)
+
+
+
+        val priceRangeOptions = resources.getStringArray(R.array.priceRange)
+        val priceRangeSpinner = findViewById<Spinner>(R.id.priceRangeSpinner)
+        val priceRangeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, priceRangeOptions)
+        priceRangeSpinner.adapter = priceRangeAdapter
+
+        priceRangeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+              priceRange = priceRangeOptions[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // write code to perform some action
+            }
+        }
+
+
+        /*
+        Setting up select image-button.
+         */
+        val selectImageButton = findViewById<Button>(R.id.selectImageButton)
+        selectImageButton.setOnClickListener {
+            selectImage()
+        }
 
         /*
         Setting up save-button
@@ -56,7 +102,7 @@ class AddPlace : AppCompatActivity() {
             /*
             Making sure we at least have a name and an address. If not, have a Toast.
              */
-            if(nameEdit.text.isNotEmpty() && cityEdit.text.isNotEmpty()) {
+            if(nameEdit.text.isNotEmpty() && addressEdit.text.isNotEmpty()) {
                 createPlace()
             } else {
                 Toast.makeText(this, "You must enter a title and an address.", Toast.LENGTH_SHORT).show()
@@ -74,6 +120,62 @@ class AddPlace : AppCompatActivity() {
     }
 
     /*
+    Lets the user select an image for the place.
+     */
+    private fun selectImage() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+
+        startActivityForResult(intent, 100)
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == 100 && resultCode == RESULT_OK) {
+            imageUri = data?.data!!
+            shopImageView.setImageURI(imageUri)
+        }
+    }
+
+    private fun uploadImage() {
+
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("Uploading file...")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
+
+        val fileName = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd HH:mm:ss")
+            .withZone(ZoneOffset.UTC)
+            .format(Instant.now())
+
+        val storageReference = FirebaseStorage.getInstance()
+            .getReference("images/$fileName")
+        imageRef = storageReference
+
+        storageReference.putFile(imageUri).addOnSuccessListener {
+
+            Toast.makeText(
+                this, "Successfully uploaded image",
+                Toast.LENGTH_SHORT
+            ).show()
+            if (progressDialog.isShowing) progressDialog.dismiss()
+
+
+        }.addOnFailureListener {
+
+            if (progressDialog.isShowing) progressDialog.dismiss()
+            Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
+
+        }
+        createPlace()
+    }
+
+
+    /*
     Starts PlacesRecyclerViewActivity.
      */
     private fun goToPlaces() {
@@ -88,11 +190,11 @@ class AddPlace : AppCompatActivity() {
      */
     private fun createPlace() {
         val title = nameEdit.text.toString()
-        val address = "${streetEdit.text}\n" +
-                "${postalCodeEdit.text}\n" +
-                "${cityEdit.text}"
+        val address = addressEdit.text.toString()
+        val openingHours = openingHoursEdit.text.toString()
         val description = descriptionEdit.text.toString()
         val rating = ratingBar.rating
+
 
 
         val coordinates = getCoordinatesFromAddress(address)
@@ -101,13 +203,21 @@ class AddPlace : AppCompatActivity() {
         val place = PlaceItem(
             title = title,
             address = address,
+            openingHours = openingHours,
+            priceRange = priceRange,
             description = description,
             rating = rating,
-            image = R.drawable.ic_baseline_panorama_wide_angle_24,
+            //imageRef = imageRef,
             latitude = coordinates?.get(0),
             longitude = coordinates?.get(1),
-            userUID = auth.currentUser?.uid.toString()
+            userUID = auth.currentUser?.uid.toString(),
+            created = DateTimeFormatter
+                .ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")
+                .withZone(ZoneOffset.UTC)
+                .format(Instant.now())
         )
+
+
 
         db.collection("places").add(place).addOnCompleteListener { task ->
             if(task.isSuccessful) {
@@ -120,6 +230,7 @@ class AddPlace : AppCompatActivity() {
                 Log.d("!!!!", "Place not created ${task.exception}")
             }
         }
+
     }
 
 

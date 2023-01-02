@@ -9,8 +9,8 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         android:text="@string/title"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -21,7 +21,7 @@
         android:id="@+id/placeImageView"
         android:layout_width="94dp"
         android:layout_height="101dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
         android:contentDescription="@string/picture_of_place"
@@ -47,18 +47,25 @@
         android:layout_width="79dp"
         android:layout_height="15dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="16dp"
         android:numStars="5"
-        app:layout_constraintBottom_toBottomOf="@+id/placeImageView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/placeImageView"
+        app:layout_constraintTop_toBottomOf="@+id/shortDescriptiontTextView"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/shortDescriptiontTextView"
-        android:layout_width="105dp"
-        android:layout_height="99dp"
-        android:layout_marginEnd="50dp"
+        android:layout_width="102dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
         android:text="Short description"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/addressTextView" />
+        app:layout_constraintBottom_toTopOf="@+id/ratingBar"
+        app:layout_constraintStart_toEndOf="@+id/placeImageView"
+        app:layout_constraintTop_toBottomOf="@+id/addressTextView" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
