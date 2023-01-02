@@ -13,6 +13,15 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.thriftstoresapp.databinding.ActivityMapsBinding
 
+/*
+Nothing much going on here, but the default map activity.
+Some things to add, if I get the time:
+The users location
+A button to toggle between All shops and Selected shop
+The possibility to click a marker of another shop to view its info
+Directions to a store
+A more interesting info-window
+ */
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
@@ -28,13 +37,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
 
 
+        /*
+        Sets up the back-button, to go back to PlacesRecyclerViewActivity. Maybe we should go back
+        to InfoActivity instead? We'll see.
+         */
         val backButton = findViewById<Button>(R.id.mapsBackButton)
         backButton.setOnClickListener {
             val intent = Intent(this, PlacesRecyclerViewActivity::class.java)
@@ -50,7 +62,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val longitude = LocalData.currentPlace?.longitude
         val shopName = LocalData.currentPlace?.title
 
-        // Add a marker at the shop
+        /*
+        Adds a marker at the location for the shop and moves the camera there.
+         */
         if(latitude != null && longitude != null) {
             val place = LatLng(latitude, longitude)
             mMap.addMarker(MarkerOptions().position(place).title("$shopName"))

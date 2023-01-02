@@ -16,6 +16,9 @@ import com.google.firebase.ktx.Firebase
 
 class AddPlace : AppCompatActivity() {
 
+    /*
+    Declaring variables for the Views.
+     */
     lateinit var nameEdit: EditText
     lateinit var streetEdit: EditText
     lateinit var postalCodeEdit: EditText
@@ -23,6 +26,9 @@ class AddPlace : AppCompatActivity() {
     lateinit var descriptionEdit: EditText
     lateinit var ratingBar: RatingBar
 
+    /*
+    Declaring variables for login and database.
+     */
     private val auth = Firebase.auth
     private val db = Firebase.firestore
 
@@ -31,6 +37,9 @@ class AddPlace : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_place)
 
+        /*
+        Some lateinit:ing (it IS a word!)
+         */
         nameEdit = findViewById(R.id.nameEditText)
         streetEdit = findViewById(R.id.streetEditText)
         postalCodeEdit = findViewById(R.id.postalCodeEditText)
@@ -39,11 +48,14 @@ class AddPlace : AppCompatActivity() {
         ratingBar = findViewById(R.id.ratingBarEdit)
 
 
-
+        /*
+        Setting up save-button
+         */
         val saveButton = findViewById<Button>(R.id.saveButton)
-
         saveButton.setOnClickListener {
-
+            /*
+            Making sure we at least have a name and an address. If not, have a Toast.
+             */
             if(nameEdit.text.isNotEmpty() && cityEdit.text.isNotEmpty()) {
                 createPlace()
             } else {
@@ -52,20 +64,29 @@ class AddPlace : AppCompatActivity() {
 
         }
 
+        /*
+        Setting up cancel-button, for those who had a change of heart.
+         */
         val cancelButton = findViewById<Button>(R.id.cancelButton)
-
         cancelButton.setOnClickListener {
             goToPlaces()
         }
     }
 
+    /*
+    Starts PlacesRecyclerViewActivity.
+     */
     private fun goToPlaces() {
         val intent = Intent(this, PlacesRecyclerViewActivity::class.java)
         startActivity(intent)
         finish()
     }
 
-    fun createPlace() {
+    /*
+    Calls getCoordinatesFromAddress, creates a PlaceItem from entered data, and tries to save it to
+    Firebase.firestore. The Toast comes with info whether the operation was successful or not.
+     */
+    private fun createPlace() {
         val title = nameEdit.text.toString()
         val address = "${streetEdit.text}\n" +
                 "${postalCodeEdit.text}\n" +
@@ -99,11 +120,6 @@ class AddPlace : AppCompatActivity() {
                 Log.d("!!!!", "Place not created ${task.exception}")
             }
         }
-
-        /*db.collection("places").add(place).addOnSuccessListener {
-            //Toast.makeText(this, "Place saved", Toast.LENGTH_SHORT).show()
-            goToPlaces()
-        }*/
     }
 
 
