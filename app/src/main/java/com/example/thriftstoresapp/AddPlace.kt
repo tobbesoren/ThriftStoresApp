@@ -37,8 +37,14 @@ class AddPlace : AppCompatActivity() {
      */
     lateinit var priceRange: String
 
+    /*
+    Lateinit imageRef to save in the PlaceItem. Not implemented yet.
+     */
     private lateinit var imageRef: StorageReference
 
+    /*
+    Will hold the Uri to the selected image.
+     */
     private lateinit var imageUri: Uri
 
     /*
@@ -63,7 +69,7 @@ class AddPlace : AppCompatActivity() {
         ratingBar = findViewById(R.id.ratingBarEdit)
         shopImageView = findViewById(R.id.shopImageView)
 
-        val defaultDrawableResourceId = R.drawable.ic_baseline_panorama_wide_angle_24
+        val defaultDrawableResourceId = R.drawable.ic_baseline_panorama_24
         imageUri = Uri.parse(
             ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
                     packageName + "/" + defaultDrawableResourceId)
@@ -103,7 +109,7 @@ class AddPlace : AppCompatActivity() {
             Making sure we at least have a name and an address. If not, have a Toast.
              */
             if(nameEdit.text.isNotEmpty() && addressEdit.text.isNotEmpty()) {
-                createPlace()
+                uploadImage()
             } else {
                 Toast.makeText(this, "You must enter a title and an address.", Toast.LENGTH_SHORT).show()
             }
@@ -142,10 +148,6 @@ class AddPlace : AppCompatActivity() {
 
     private fun uploadImage() {
 
-        val progressDialog = ProgressDialog(this)
-        progressDialog.setMessage("Uploading file...")
-        progressDialog.setCancelable(false)
-        progressDialog.show()
 
         val fileName = DateTimeFormatter
             .ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -156,22 +158,22 @@ class AddPlace : AppCompatActivity() {
             .getReference("images/$fileName")
         imageRef = storageReference
 
+        createPlace()
+
         storageReference.putFile(imageUri).addOnSuccessListener {
 
             Toast.makeText(
                 this, "Successfully uploaded image",
                 Toast.LENGTH_SHORT
             ).show()
-            if (progressDialog.isShowing) progressDialog.dismiss()
 
 
         }.addOnFailureListener {
-
-            if (progressDialog.isShowing) progressDialog.dismiss()
+            
             Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
 
         }
-        createPlace()
+
     }
 
 
@@ -207,7 +209,7 @@ class AddPlace : AppCompatActivity() {
             priceRange = priceRange,
             description = description,
             rating = rating,
-            //imageRef = imageRef,
+            imageRef = imageRef.toString(),
             latitude = coordinates?.get(0),
             longitude = coordinates?.get(1),
             userUID = auth.currentUser?.uid.toString(),
