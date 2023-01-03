@@ -37,6 +37,7 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
     var selectedView = "View all thrift stores"
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_places_recycler_view)
@@ -170,7 +171,7 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
     maybe I should use enum instead?
      */
     private fun sortList() {
-        Toast.makeText(this, "$sort", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, "$sort", Toast.LENGTH_SHORT).show()
         when(sort) {
             "Sort by name" -> LocalData.placeList.sortWith(compareBy { it.title })
             "Sort by rating" -> LocalData.placeList.sortWith(compareByDescending { it.rating })

@@ -1,6 +1,5 @@
 package com.example.thriftstoresapp
 
-import android.app.ProgressDialog
 import android.content.ContentResolver
 import android.content.Intent
 import android.location.Address
@@ -15,7 +14,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import java.time.Instant
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -37,10 +35,6 @@ class AddPlace : AppCompatActivity() {
      */
     lateinit var priceRange: String
 
-    /*
-    Lateinit imageRef to save in the PlaceItem. Not implemented yet.
-     */
-    private lateinit var imageRef: StorageReference
 
     /*
     Will hold the Uri to the selected image.
@@ -69,20 +63,24 @@ class AddPlace : AppCompatActivity() {
         ratingBar = findViewById(R.id.ratingBarEdit)
         shopImageView = findViewById(R.id.shopImageView)
 
-        val defaultDrawableResourceId = R.drawable.ic_baseline_panorama_24
+        val defaultDrawableResourceId = R.drawable.default_image
         imageUri = Uri.parse(
             ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
                     packageName + "/" + defaultDrawableResourceId)
+
+        shopImageView.setImageURI(imageUri)
 
 
 
         val priceRangeOptions = resources.getStringArray(R.array.priceRange)
         val priceRangeSpinner = findViewById<Spinner>(R.id.priceRangeSpinner)
-        val priceRangeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, priceRangeOptions)
+        val priceRangeAdapter = ArrayAdapter(this,
+            android.R.layout.simple_spinner_item, priceRangeOptions)
         priceRangeSpinner.adapter = priceRangeAdapter
 
         priceRangeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>,
+                                        view: View, position: Int, id: Long) {
               priceRange = priceRangeOptions[position]
             }
 
@@ -111,7 +109,8 @@ class AddPlace : AppCompatActivity() {
             if(nameEdit.text.isNotEmpty() && addressEdit.text.isNotEmpty()) {
                 uploadImage()
             } else {
-                Toast.makeText(this, "You must enter a title and an address.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "You must enter a title and an address.",
+                    Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -126,7 +125,9 @@ class AddPlace : AppCompatActivity() {
     }
 
     /*
-    Lets the user select an image for the place.
+    Lets the user select an image for the place. I'm using deprecated methods to select and upload
+    images, but sometimes you gotta work with what you (kinda) understands. This should most
+    definitely be updated.
      */
     private fun selectImage() {
         val intent = Intent()
@@ -136,7 +137,9 @@ class AddPlace : AppCompatActivity() {
         startActivityForResult(intent, 100)
     }
 
-
+    /*
+    More deprecated stuff!
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -146,8 +149,11 @@ class AddPlace : AppCompatActivity() {
         }
     }
 
+    /*
+    This creates a StorageReference, calls createPlace() and, finally, tries to upload the selected
+    image to firebase cloud storage.
+     */
     private fun uploadImage() {
-
 
         val fileName = DateTimeFormatter
             .ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -156,24 +162,23 @@ class AddPlace : AppCompatActivity() {
 
         val storageReference = FirebaseStorage.getInstance()
             .getReference("images/$fileName")
-        imageRef = storageReference
 
-        createPlace()
+
 
         storageReference.putFile(imageUri).addOnSuccessListener {
-
+            storageReference.downloadUrl.addOnSuccessListener { downloadUri ->
+                /*
+                We call createPlace here, when the storageReference variable is created. Maybe I
+                should move this...
+                */
+                createPlace(downloadUri)
+            }
             Toast.makeText(
                 this, "Successfully uploaded image",
-                Toast.LENGTH_SHORT
-            ).show()
-
-
+                Toast.LENGTH_SHORT).show()
         }.addOnFailureListener {
-            
             Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
-
         }
-
     }
 
 
@@ -190,7 +195,7 @@ class AddPlace : AppCompatActivity() {
     Calls getCoordinatesFromAddress, creates a PlaceItem from entered data, and tries to save it to
     Firebase.firestore. The Toast comes with info whether the operation was successful or not.
      */
-    private fun createPlace() {
+    private fun createPlace(downloadUri: Uri) {
         val title = nameEdit.text.toString()
         val address = addressEdit.text.toString()
         val openingHours = openingHoursEdit.text.toString()
@@ -209,7 +214,7 @@ class AddPlace : AppCompatActivity() {
             priceRange = priceRange,
             description = description,
             rating = rating,
-            imageRef = imageRef.toString(),
+            imageUri = downloadUri.toString(),
             latitude = coordinates?.get(0),
             longitude = coordinates?.get(1),
             userUID = auth.currentUser?.uid.toString(),
@@ -218,8 +223,6 @@ class AddPlace : AppCompatActivity() {
                 .withZone(ZoneOffset.UTC)
                 .format(Instant.now())
         )
-
-
 
         db.collection("places").add(place).addOnCompleteListener { task ->
             if(task.isSuccessful) {

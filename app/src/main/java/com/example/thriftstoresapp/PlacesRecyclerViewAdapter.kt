@@ -2,6 +2,7 @@ package com.example.thriftstoresapp
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.thriftstoresapp.databinding.ActivityMainBinding
 
 
 /*
@@ -19,6 +22,7 @@ class PlacesRecyclerViewAdapter(private val context : Context,
     : RecyclerView.Adapter<PlacesRecyclerViewAdapter.ViewHolder>() {
 
     private var layoutInflater = LayoutInflater.from(context)
+
 
 
     /*
@@ -41,6 +45,14 @@ class PlacesRecyclerViewAdapter(private val context : Context,
         holder.descriptionTextView.text = placeItem.description
         //holder.placeImageView.setImageResource(placeItem.image)
         holder.ratingView.rating = placeItem.rating!!
+
+        /*
+        Testing getting image from Glide
+         */
+        Glide.with(context)
+            .load(placeItem.imageUri)
+            .into(holder.placeImageView)
+
 
         /*
         When an item is clicked, InfoActivity is started.
