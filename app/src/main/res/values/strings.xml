@@ -14,6 +14,7 @@
     <string name="street">Street</string>
     <string name="postal_code">Postal code</string>
     <string name="city">City</string>
+    <string name="opening_hours">Opening hours</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="pricing">Pricing</string>
     <string name="categories">Categories</string>
@@ -23,6 +24,8 @@
     <string name="log_out">Log out</string>
     <string name="select">Select</string>
     <string name="delete">Delete</string>
+    <string name="price_range">Price range:</string>
+    <string name="select_image">Select image</string>
 
     <string-array name="sortBy">
         <item>Sort by name</item>
@@ -34,6 +37,12 @@
     <string-array name="selectView">
         <item>View all thrift stores</item>
         <item>View my thrift stores</item>
+    </string-array>
+
+    <string-array name="priceRange">
+        <item>Low prices</item>
+        <item>Medium prices</item>
+        <item>High prices</item>
     </string-array>
 
 </resources>

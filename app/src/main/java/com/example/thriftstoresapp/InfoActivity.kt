@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 
 
 class InfoActivity : AppCompatActivity() {
@@ -43,7 +45,7 @@ class InfoActivity : AppCompatActivity() {
         addressTextView = findViewById(R.id.infoAdressTextView)
         ratingBar = findViewById(R.id.infoRatingBar)
         pricingTextView = findViewById(R.id.infoPricingTextView)
-        categoriesTextView = findViewById(R.id.infoCategoriesTextView)
+        categoriesTextView = findViewById(R.id.infoOpeningHoursTextView)
         descriptionTextView = findViewById(R.id.infoDescriptionTextView)
         latLongTextview = findViewById(R.id.infoLatLongTextView)
 
@@ -55,7 +57,16 @@ class InfoActivity : AppCompatActivity() {
         addressTextView.text = LocalData.currentPlace?.address
         ratingBar.rating = LocalData.currentPlace?.rating!!
         descriptionTextView.text = LocalData.currentPlace?.description
-        latLongTextview.text = "lat: ${LocalData.currentPlace?.latitude}, lng: ${LocalData.currentPlace?.longitude}"
+        latLongTextview.text = "lat: ${LocalData.currentPlace?.latitude}," +
+                "lng: ${LocalData.currentPlace?.longitude}"
+
+        /*
+        Testing getting image from Glide
+         */
+        Glide.with(this)
+            .load(LocalData.currentPlace?.imageUri)
+            .into(storeImageView)
+
 
         /*
         Checking if the currentPlace has latitude and longitude. If it does: sets up the map-button
@@ -72,9 +83,10 @@ class InfoActivity : AppCompatActivity() {
         }
 
         /*
-        Checks if the currentPlace was added to the database by the current usr. If it was: Sets up
+        Checks if the currentPlace was added to the database by the current user. If it was: Sets up
         the delete-button and makes it clickable, allowing the user to delete the currentPlace from
-        the database. Also starts PlacesRecyclerViewActivity.
+        the database, (and the corresponding image- NO, THAT DOESN'T WORK)
+        (Well, anytime soon I guess). Also calls goToPlaces.
          */
         if(LocalData.currentPlace!!.userUID == currentUser) {
             val deleteButton = findViewById<Button>(R.id.infoDeleteButton)
@@ -83,12 +95,17 @@ class InfoActivity : AppCompatActivity() {
             deleteButton.setOnClickListener {
                 val docToDelete = LocalData.currentPlace!!.id
                 if(docToDelete != null) {
-                    db.collection("places").document(docToDelete).delete().addOnSuccessListener {
-                        LocalData.currentPlace = null //resets currentPlace
-                        val intent = Intent(this, PlacesRecyclerViewActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
+                    db.collection("places").document(docToDelete).delete()
+                        .addOnSuccessListener {
+                            LocalData.currentPlace = null //resets currentPlace
+                            Toast.makeText(this, "Place deleted",
+                                Toast.LENGTH_SHORT).show()
+                            goToPlaces()
+                        }.addOnFailureListener {
+                            Toast.makeText(this, "Couldn't delete place",
+                                Toast.LENGTH_SHORT).show()
+                            goToPlaces()
+                        }
                 }
             }
         }
@@ -99,10 +116,19 @@ class InfoActivity : AppCompatActivity() {
          */
         val backButton = findViewById<Button>(R.id.infoBackButton)
         backButton.setOnClickListener{
-            val intent = Intent(this, PlacesRecyclerViewActivity::class.java)
             LocalData.currentPlace = null //resets currentPlace
-            startActivity(intent)
-            finish()
+            goToPlaces()
         }
+    }
+
+
+    /*
+    The goToPlaces-function never lets you down when you want to go to
+    PlacesRecyclerViewActivity.
+     */
+    private fun goToPlaces() {
+        val intent = Intent(this, PlacesRecyclerViewActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
