@@ -104,7 +104,6 @@ class AddPlace : AppCompatActivity() {
          */
         val cancelButton = findViewById<Button>(R.id.cancelButton)
         cancelButton.setOnClickListener {
-            Toast.makeText(this, "Oh no!", Toast.LENGTH_SHORT).show()
             goToPlaces()
         }
 

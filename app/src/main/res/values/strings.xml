@@ -30,8 +30,8 @@
     <string-array name="sortBy">
         <item>Sort by name</item>
         <item>Sort by rating</item>
-        <item>Sort by distance</item>
         <item>Sort by latest</item>
+        <item>Sort by distance</item>
     </string-array>
 
     <string-array name="selectView">

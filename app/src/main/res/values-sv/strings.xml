@@ -29,21 +29,21 @@
     <string name="select_image">Välj bild</string>
 
     <string-array name="sortBy">
-        <item>Sort by name</item>
-        <item>Sort by rating</item>
-        <item>Sort by distance</item>
-        <item>Sort by latest</item>
+        <item>Sortera efter butiksnamn</item>
+        <item>Sortera efter betyg</item>
+        <item>Sortera efter senast tillagda</item>
+        <item>Sortera efter avstånd</item>
     </string-array>
 
     <string-array name="selectView">
-        <item>View all thrift stores</item>
-        <item>View my thrift stores</item>
+        <item>Visa alla butiker</item>
+        <item>Visa mina butiker</item>
     </string-array>
 
     <string-array name="priceRange">
-        <item>Low prices</item>
-        <item>Medium prices</item>
-        <item>High prices</item>
+        <item>Låga priser</item>
+        <item>Rimliga priser</item>
+        <item>Höga priser</item>
     </string-array>
 
     <string name="latLng">lat: %1$s lng: %2$s</string>

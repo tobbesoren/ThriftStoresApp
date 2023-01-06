@@ -14,6 +14,8 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class PlacesRecyclerViewActivity : AppCompatActivity() {
 
@@ -27,8 +29,8 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
 
     //Declare and initialize the variables for filtering and sorting the items of the recyclerView.
     //By default, we show all places and sort them by name.
-    var sort = "Sort by name"
-    var selectedView = "View all thrift stores"
+    var sort = 1
+    var selectedView = 1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +62,7 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
                                         view: View,
                                         position: Int,
                                         id: Long) {
-                sort = sortBy[position]
+                sort = position
                 loadPlaces(selectedView)
             }
 
@@ -80,7 +82,7 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
                                         view: View,
                                         position: Int,
                                         id: Long) {
-                selectedView = viewSelections[position]
+                selectedView = position
                 loadPlaces(selectedView)
             }
 
@@ -120,16 +122,16 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
     filtered by selectedView. When the data is downloaded, the list is sorted by calling sortList,
     and setAdapter is called.
      */
-    private fun loadPlaces(selectedView: String) {
+    private fun loadPlaces(selectedView: Int) {
         when(selectedView) {
-            "View all thrift stores" -> {
+            0 -> {
                 db.collection("places").get().addOnSuccessListener { documentSnapShot ->
                 makeList(documentSnapShot)
                     sortList()
                     setAdapter()
                 }
             }
-            "View my thrift stores" -> {
+            1 -> {
                 db.collection("places").whereEqualTo("userUID", currentUser)
                     .get().addOnSuccessListener { documentSnapShot ->
                     makeList(documentSnapShot)
@@ -162,11 +164,20 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
     maybe I should use enum instead?
      */
     private fun sortList() {
+        Log.d("!!!!", "sort: $sort, selectedView: $selectedView")
         when(sort) {
-            "Sort by name" -> LocalData.placeList.sortWith(compareBy { it.title })
-            "Sort by rating" -> LocalData.placeList.sortWith(compareByDescending { it.rating })
-            "Sort by latest" -> LocalData.placeList.sortWith(compareByDescending { it.created })
-            "Sort by distance" -> LocalData.placeList.sortWith(compareByDescending { it.distance })
+            0 -> LocalData.placeList.sortWith(compareBy { it.title })
+            1 -> LocalData.placeList.sortWith(compareByDescending { it.rating })
+            2 -> {
+                val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter
+                    .ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")
+                LocalData.placeList.sortByDescending {
+                    LocalDate.parse(it.created, dateTimeFormatter)
+                }
+
+                LocalData.placeList.sortWith(compareByDescending { it.created })
+            }
+            3 -> LocalData.placeList.sortWith(compareByDescending { it.distance })
         }
     }
 
