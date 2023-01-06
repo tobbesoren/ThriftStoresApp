@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         */
 
         if(email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Enter e-mail and password to set up user",
+            Toast.makeText(this, getString(R.string.enter_email_and_password),
                 Toast.LENGTH_SHORT).show()
             return
         }
@@ -72,12 +72,14 @@ class MainActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if(task.isSuccessful) {
-                    Toast.makeText(this, "User created", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.user_created), Toast.LENGTH_SHORT).show()
                     Log.d("!!!!", "create user successful")
                     goToPlaces()
                 } else {
-                    Toast.makeText(this, "user not created ${task.exception}",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(
+                        R.string.user_not_created,
+                        task.exception.toString()
+                    ), Toast.LENGTH_SHORT).show()
                     Log.d("!!!!", "user not created ${task.exception}")
                 }
             }
@@ -95,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         If the user hasn't entered email and/or password, we return early and get some Toast.
          */
         if(email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Enter e-mail and password to log in",
+            Toast.makeText(this, getString(R.string.to_log_in),
                 Toast.LENGTH_SHORT).show()
             return
         }
@@ -106,11 +108,14 @@ class MainActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if(task.isSuccessful) {
-                    Toast.makeText(this, "User logged in", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.user_logged_in), Toast.LENGTH_SHORT).show()
                     Log.d("!!!!", "User logged in")
                     goToPlaces()
                 } else {
-                    Toast.makeText(this, "User not logged in: ${task.exception}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(
+                        R.string.user_not_logged_in,
+                        task.exception.toString()
+                    ), Toast.LENGTH_SHORT).show()
                     Log.d("!!!!", "User not logged in: ${task.exception}")
                 }
             }

@@ -46,6 +46,18 @@
         <item>Höga priser</item>
     </string-array>
 
+    <!-- toast messages -->
+    <!-- main -->
+    <string name="enter_email_and_password">
+        Ange e-post och lösenord för att skapa användare</string>
+    <string name="user_created">Ny användare skapad</string>
+    <string name="user_not_created">Ny användare kunde inte skapas: %1$s</string>
+    <string name="to_log_in">Ange e-post och lösenord för att logga in</string>
+    <string name="user_logged_in">Användare inloggad</string>
+    <string name="user_not_logged_in">Kunde inte logga in: %1$s</string>
+    
+
+    <!-- strings set in code -->
     <string name="latLng">lat: %1$s lng: %2$s</string>
 
 </resources>
