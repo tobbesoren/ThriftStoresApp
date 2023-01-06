@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="6dp"
-        android:text="@string/pricing"
+        android:text="@string/price_range"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PricingTextView" />
 
@@ -81,7 +81,7 @@
         android:layout_height="21dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="6dp"
-        android:text="@string/opening_hours"
+        android:text="@string/no_data"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/openingHoursTextView" />
 
@@ -111,10 +111,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/description"
+        android:layout_marginTop="6dp"
+        android:text="@string/no_data"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoRatingBar" />
+        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
     <Button
         android:id="@+id/infoBackButton"
@@ -146,5 +146,15 @@
         android:text="@string/opening_hours"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoAdressTextView" />
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/description_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoRatingBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
