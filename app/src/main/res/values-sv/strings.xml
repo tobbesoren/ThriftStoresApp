@@ -46,4 +46,6 @@
         <item>High prices</item>
     </string-array>
 
+    <string name="latLng">lat: %1$s lng: %2$s</string>
+
 </resources>

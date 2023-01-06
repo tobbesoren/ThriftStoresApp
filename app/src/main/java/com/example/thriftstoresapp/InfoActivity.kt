@@ -10,6 +10,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 
 class InfoActivity : AppCompatActivity() {
@@ -59,9 +60,9 @@ class InfoActivity : AppCompatActivity() {
         pricingTextView.text = LocalData.currentPlace?.priceRange
         openingHoursTextView.text = LocalData.currentPlace?.openingHours
         descriptionTextView.text = LocalData.currentPlace?.description
-        latLongTextview.text = "lat: ${LocalData.currentPlace?.latitude}," +
-                "lng: ${LocalData.currentPlace?.longitude}"
-
+        latLongTextview.text = getString(R.string.latLng,
+            LocalData.currentPlace?.latitude.toString(),
+            LocalData.currentPlace?.longitude.toString())
         /*
         Getting image from Firebase firestore
          */
@@ -92,37 +93,22 @@ class InfoActivity : AppCompatActivity() {
             }
         }
 
+
         /*
         Checks if the currentPlace was added to the database by the current user. If it was: Sets up
         the delete-button and makes it clickable, allowing the user to delete the currentPlace from
-        the database, (and the corresponding image- NO, THAT DOESN'T WORK)
-        (Well, anytime soon I guess). Also calls goToPlaces.
+        the database, and the corresponding image by calling deletePlace and deleteImage.
+        Also calls goToPlaces.
          */
         if(LocalData.currentPlace!!.userUID == currentUser) {
             val deleteButton = findViewById<Button>(R.id.infoDeleteButton)
             deleteButton.isVisible = true
-
-            /*
-            This is added to make it possible to delete the image. Not done yet!
-             */
-            //val storageReference = FirebaseStorage.getInstance().reference
-            //val imageToDeleteRef = storageReference.child(LocalData.currentPlace!!.imageFileName)
-            //------------------------------------------------------------------------------
-
             deleteButton.setOnClickListener {
                 val docToDelete = LocalData.currentPlace!!.id
+
                 if(docToDelete != null) {
-                    db.collection("places").document(docToDelete).delete()
-                        .addOnSuccessListener {
-                            LocalData.currentPlace = null //resets currentPlace, just to be safe!
-                            Toast.makeText(this, "Place deleted",
-                                Toast.LENGTH_SHORT).show()
-                            //goToPlaces()
-                        }.addOnFailureListener {
-                            Toast.makeText(this, "Couldn't delete place",
-                                Toast.LENGTH_SHORT).show()
-                            //goToPlaces()
-                        }
+                    deletePlace(docToDelete)
+                    deleteImage(storageReference)
                 }
                 goToPlaces()
             }
@@ -141,6 +127,38 @@ class InfoActivity : AppCompatActivity() {
 
 
     /*
+    Deletes the place from the database. Takes documentID as argument (a String).
+     */
+    private fun deletePlace(docToDelete: String) {
+        db.collection("places").document(docToDelete).delete()
+            .addOnSuccessListener {
+                LocalData.currentPlace = null //resets currentPlace, just to be safe!
+                Toast.makeText(this, "Place deleted",
+                    Toast.LENGTH_SHORT).show()
+                //goToPlaces()
+            }.addOnFailureListener {
+                Toast.makeText(this, "Couldn't delete place",
+                    Toast.LENGTH_SHORT).show()
+                //goToPlaces()
+            }
+    }
+
+
+    /*
+    Deletes image. Takes the StorageReference to the image as argument.
+     */
+    private fun deleteImage(imageToDeleteRef: StorageReference) {
+        imageToDeleteRef.delete().addOnSuccessListener {
+            Toast.makeText(this, "Image successfully deleted",
+                Toast.LENGTH_SHORT).show()
+        }.addOnFailureListener {
+            Toast.makeText(this, "Image deletion failed",
+                Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    /*
     The goToPlaces-function never lets you down when you want to go to
     PlacesRecyclerViewActivity.
      */
@@ -150,7 +168,5 @@ class InfoActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun deleteImage() {
 
-    }
 }
