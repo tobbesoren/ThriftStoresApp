@@ -30,6 +30,7 @@
     <string name="short_description">Kort beskrivning</string>
     <string name="description_title">Beskrivning:</string>
     <string name="no_data">---</string>
+    <string name="add_place">Lägg till loppis</string>
 
     <string-array name="sortBy">
         <item>Sortera efter butiksnamn</item>

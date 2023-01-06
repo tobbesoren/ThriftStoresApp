@@ -41,7 +41,7 @@ class PlacesRecyclerViewAdapter(private val context : Context,
 
         holder.titleTextView.text = placeItem.title
         holder.addressTextView.text = placeItem.address
-        holder.descriptionTextView.text = placeItem.description
+        //holder.descriptionTextView.text = placeItem.description
         holder.ratingView.rating = placeItem.rating!!
 
         //Using Glide to show image from Firebase storage
@@ -80,7 +80,7 @@ class PlacesRecyclerViewAdapter(private val context : Context,
 
         val titleTextView = itemView.findViewById<TextView>(R.id.titleTextView)!!
         val addressTextView = itemView.findViewById<TextView>(R.id.addressTextView)!!
-        val descriptionTextView = itemView.findViewById<TextView>(R.id.shortDescriptiontTextView)!!
+        //val descriptionTextView = itemView.findViewById<TextView>(R.id.shortDescriptiontTextView)!!
         val placeImageView = itemView.findViewById<ImageView>(R.id.placeImageView)!!
         val ratingView = itemView.findViewById<RatingBar>(R.id.ratingBar)!!
     }
