@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LoppisApp</string>
+    <string name="log_in">Logga in</string>
+    <string name="create_user">Skapa användare</string>
+    <string name="e_mail">E-mejl</string>
+    <string name="password">Lösenord</string>
+    <string name="title">Butiksnamn</string>
+    <string name="address">Adress</string>
+    <string name="picture_of_place">Bild på butik</string>
+    <string name="name_of_store">Butikens namn</string>
+    <string name="description">Beskrivning (max 200 tecken)</string>
+    <string name="save">Spara</string>
+    <string name="cancel">Avbryt</string>
+    <string name="street">Gatuadress</string>
+    <string name="postal_code">Postnummer</string>
+    <string name="city">Stad</string>
+    <string name="opening_hours">Öppettider:</string>
+    <string name="title_activity_maps">Karta</string>
+    <string name="pricing">Prisnivå</string>
+    <string name="categories">Kategorier</string>
+    <string name="map">Karta</string>
+    <string name="lat_long">Lat, long</string>
+    <string name="back">Tillbaka</string>
+    <string name="log_out">Logga ut</string>
+    <string name="select">Välj</string>
+    <string name="delete">Radera</string>
+    <string name="price_range">Prisnivå:</string>
+    <string name="select_image">Välj bild</string>
+    <string name="short_description">Kort beskrivning</string>
+    <string name="description_title">Beskrivning:</string>
+    <string name="no_data">---</string>
+    <string name="add_place">Lägg till loppis</string>
+
+    <string-array name="sortBy">
+        <item>Sortera efter butiksnamn</item>
+        <item>Sortera efter betyg</item>
+        <item>Sortera efter senast tillagda</item>
+        <!--<item>Sortera efter avstånd</item>-->
+    </string-array>
+
+    <string-array name="selectView">
+        <item>Visa alla butiker</item>
+        <item>Visa mina butiker</item>
+    </string-array>
+
+    <string-array name="priceRange">
+        <item>Låga priser</item>
+        <item>Rimliga priser</item>
+        <item>Höga priser</item>
+    </string-array>
+
+    <!-- toast messages -->
+    <!-- main -->
+    <string name="enter_email_and_password">
+        Ange e-post och lösenord för att skapa användare</string>
+    <string name="user_created">Ny användare skapad</string>
+    <string name="user_not_created">Ny användare kunde inte skapas: %1$s</string>
+    <string name="to_log_in">Ange e-post och lösenord för att logga in</string>
+    <string name="user_logged_in">Användare inloggad</string>
+    <string name="user_not_logged_in">Kunde inte logga in: %1$s</string>
+
+    <!-- AddPlace -->
+    <string name="enter_store_and_address">Du måste ange butiksnamn och adress</string>
+    <string name="successfully_uploaded_image">Bilden har laddats upp</string>
+    <string name="failed_to_upload_image">Kunde inte ladda upp bild</string>
+    <string name="thrift_store_added">Loppis tillagd</string>
+    <string name="thrift_store_not_added">Kunde inte lägga till loppis: %1$s</string>
+    <string name="no_address_found">Adressen kunde inte hittas</string>
+    <string name="geocoder_error">Geocoder-fel: %1$s</string>
+
+    <!-- InfoActivity -->
+    <string name="deleting">Raderar...</string>
+    <string name="thrift_store_deleted">Loppis raderad</string>
+    <string name="could_not_delete_thrift_store">Kunde inte radera loppis: %1$s</string>
+    <string name="image_deleted">Bild raderad</string>
+    <string name="could_not_delete_image">Kunde inte radera bild: %1$s</string>
+
+
+    <!-- strings set in code -->
+    <string name="latLng">lat: %1$s lng: %2$s</string>
+
+</resources>

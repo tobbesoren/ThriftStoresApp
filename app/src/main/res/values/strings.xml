@@ -8,13 +8,13 @@
     <string name="address">Address</string>
     <string name="picture_of_place">Picture of place</string>
     <string name="name_of_store">Name of store</string>
-    <string name="description">Description</string>
+    <string name="description">Description (max 200 chars)</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="street">Street</string>
     <string name="postal_code">Postal code</string>
     <string name="city">City</string>
-    <string name="opening_hours">Opening hours</string>
+    <string name="opening_hours">Opening hours:</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="pricing">Pricing</string>
     <string name="categories">Categories</string>
@@ -26,12 +26,18 @@
     <string name="delete">Delete</string>
     <string name="price_range">Price range:</string>
     <string name="select_image">Select image</string>
+    <string name="short_description">Short description</string>
+    <string name="description_title">Description:</string>
+    <string name="no_data">---</string>
+    <string name="add_place">Add thrift store</string>
 
+
+    <!-- spinners -->
     <string-array name="sortBy">
         <item>Sort by name</item>
         <item>Sort by rating</item>
-        <item>Sort by distance</item>
         <item>Sort by latest</item>
+        <!--<item>Sort by distance</item>-->
     </string-array>
 
     <string-array name="selectView">
@@ -44,5 +50,36 @@
         <item>Medium prices</item>
         <item>High prices</item>
     </string-array>
+
+
+    <!-- toast messages -->
+    <!-- main -->
+    <string name="enter_email_and_password">Enter e-mail and password to set up user</string>
+    <string name="user_created">User created</string>
+    <string name="user_not_created">User not created: %1$s</string>
+    <string name="to_log_in">Enter e-mail and password to log in</string>
+    <string name="user_logged_in">User logged in</string>
+    <string name="user_not_logged_in">User not logged in: %1$s</string>
+
+    <!-- AddPlace -->
+    <string name="enter_store_and_address">You must enter a store name and an address</string>
+    <string name="successfully_uploaded_image">Successfully uploaded image</string>
+    <string name="failed_to_upload_image">Failed to upload image</string>
+    <string name="thrift_store_added">Thrift store added</string>
+    <string name="thrift_store_not_added">Thrift store not added: %1$s</string>
+    <string name="no_address_found">No address found</string>
+    <string name="geocoder_error">Geocoder error: %1$s</string>
+
+    <!-- InfoActivity -->
+    <string name="deleting">Deleting...</string>
+    <string name="thrift_store_deleted">Thrift store deleted</string>
+    <string name="could_not_delete_thrift_store">Couldn\'t delete thrift store: %1$s</string>
+    <string name="image_deleted">Image deleted</string>
+    <string name="could_not_delete_image">Couldn\'t delete image: %1$s</string>
+
+    <!-- strings set in code -->
+    <string name="latLng">lat: %1$s lng: %2$s</string>
+
+
 
 </resources>

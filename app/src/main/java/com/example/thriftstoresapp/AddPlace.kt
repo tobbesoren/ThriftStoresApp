@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.core.view.isInvisible
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -20,9 +21,7 @@ import java.time.format.DateTimeFormatter
 
 class AddPlace : AppCompatActivity() {
 
-    /*
-    Declaring variables for the Views.
-     */
+    //Declaring variables for the Views.
     private lateinit var nameEdit: EditText
     private lateinit var addressEdit: EditText
     private lateinit var openingHoursEdit: EditText
@@ -30,32 +29,24 @@ class AddPlace : AppCompatActivity() {
     private lateinit var ratingBar: RatingBar
     private lateinit var shopImageView: ImageView
 
-    /*
-    Lateinit price range.
-     */
+    //Lateinit price range.
     lateinit var priceRange: String
 
-
-    /*
-    Will hold the Uri to the selected image.
-     */
+    //Will hold the Uri to the selected image.
     private lateinit var imageUri: Uri
 
-    /*
-    Declaring variables for login and database.
-     */
+    //Declaring variables for login and database.
     private val auth = Firebase.auth
     private val db = Firebase.firestore
 
-
-
+    /**
+     * Sets up layoutViews, buttons and spinner
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_place)
 
-        /*
-        Some lateinit:ing (it IS a word!)
-         */
+        //Some lateinit:ing (it IS a word!)
         nameEdit = findViewById(R.id.nameEditText)
         addressEdit = findViewById(R.id.addressEditText)
         openingHoursEdit = findViewById(R.id.openingHoursEditText)
@@ -63,15 +54,14 @@ class AddPlace : AppCompatActivity() {
         ratingBar = findViewById(R.id.ratingBarEdit)
         shopImageView = findViewById(R.id.shopImageView)
 
+        //Adds the default image
         val defaultDrawableResourceId = R.drawable.default_image
         imageUri = Uri.parse(
             ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
                     packageName + "/" + defaultDrawableResourceId)
-
         shopImageView.setImageURI(imageUri)
 
-
-
+        //Sets up price range Spinner
         val priceRangeOptions = resources.getStringArray(R.array.priceRange)
         val priceRangeSpinner = findViewById<Spinner>(R.id.priceRangeSpinner)
         val priceRangeAdapter = ArrayAdapter(this,
@@ -89,45 +79,41 @@ class AddPlace : AppCompatActivity() {
             }
         }
 
-
-        /*
-        Setting up select image-button.
-         */
+        //Setting up select image-button.
         val selectImageButton = findViewById<Button>(R.id.selectImageButton)
         selectImageButton.setOnClickListener {
             selectImage()
         }
 
-        /*
-        Setting up save-button
-         */
-        val saveButton = findViewById<Button>(R.id.saveButton)
-        saveButton.setOnClickListener {
-            /*
-            Making sure we at least have a name and an address. If not, have a Toast.
-             */
-            if(nameEdit.text.isNotEmpty() && addressEdit.text.isNotEmpty()) {
-                uploadImage()
-            } else {
-                Toast.makeText(this, "You must enter a title and an address.",
-                    Toast.LENGTH_SHORT).show()
-            }
-
-        }
-
-        /*
-        Setting up cancel-button, for those who had a change of heart.
-         */
+        //Setting up cancel-button, for those who had a change of heart.
         val cancelButton = findViewById<Button>(R.id.cancelButton)
         cancelButton.setOnClickListener {
             goToPlaces()
         }
+
+        //Setting up save-button
+        val saveButton = findViewById<Button>(R.id.saveButton)
+        saveButton.setOnClickListener {
+
+            //Making sure we at least have a name and an address. If not, have a Toast.
+            if(nameEdit.text.isNotEmpty() && addressEdit.text.isNotEmpty()) {
+                val fileName = getFileName()
+
+                createPlace(fileName)
+                uploadImageAndGoBack(fileName)
+                saveButton.visibility = View.INVISIBLE
+                cancelButton.visibility = View.INVISIBLE
+            } else {
+                Toast.makeText(this, getString(R.string.enter_store_and_address),
+                    Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
-    /*
-    Lets the user select an image for the place. I'm using deprecated methods to select and upload
-    images, but sometimes you gotta work with what you (kinda) understands. This should most
-    definitely be updated.
+    /**
+     *Lets the user select an image for the place. I'm using deprecated methods to select and upload
+     *images, but sometimes you gotta work with what you (kinda) understands. This should most
+     *definitely be updated.
      */
     private fun selectImage() {
         val intent = Intent()
@@ -137,8 +123,9 @@ class AddPlace : AppCompatActivity() {
         startActivityForResult(intent, 100)
     }
 
-    /*
-    More deprecated stuff!
+    /**
+     *More deprecated stuff!
+     *Sets the imageUri to the image returned from selectImage.
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -149,41 +136,39 @@ class AddPlace : AppCompatActivity() {
         }
     }
 
-    /*
-    This creates a StorageReference, calls createPlace() and, finally, tries to upload the selected
-    image to firebase cloud storage.
-     */
-    private fun uploadImage() {
 
-        val fileName = DateTimeFormatter
-            .ofPattern("yyyy-MM-dd HH:mm:ss")
-            .withZone(ZoneOffset.UTC)
-            .format(Instant.now())
+    /**
+     *This uploads the image to firebase storage, and goes back to placesRecyclerView.
+     */
+    private fun uploadImageAndGoBack(fileName: String) {
 
         val storageReference = FirebaseStorage.getInstance()
             .getReference("images/$fileName")
 
-
-
         storageReference.putFile(imageUri).addOnSuccessListener {
-            storageReference.downloadUrl.addOnSuccessListener { downloadUri ->
-                /*
-                We call createPlace here, when the storageReference variable is created. Maybe I
-                should move this...
-                */
-                createPlace(downloadUri)
-            }
-            Toast.makeText(
-                this, "Successfully uploaded image",
+            Toast.makeText(this, getString(R.string.successfully_uploaded_image),
                 Toast.LENGTH_SHORT).show()
+            goToPlaces()
         }.addOnFailureListener {
-            Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.failed_to_upload_image),
+                Toast.LENGTH_SHORT).show()
+            goToPlaces()
         }
     }
 
+    /**
+     * Returns a filename for the image, using a timestamp
+     */
+    private fun getFileName(): String {
+        return DateTimeFormatter
+            .ofPattern("yyyy-MM-dd HH:mm:ss")
+            .withZone(ZoneOffset.UTC)
+            .format(Instant.now())
+    }
 
-    /*
-    Starts PlacesRecyclerViewActivity.
+
+    /**
+     *Starts PlacesRecyclerViewActivity.
      */
     private fun goToPlaces() {
         val intent = Intent(this, PlacesRecyclerViewActivity::class.java)
@@ -191,21 +176,17 @@ class AddPlace : AppCompatActivity() {
         finish()
     }
 
-    /*
-    Calls getCoordinatesFromAddress, creates a PlaceItem from entered data, and tries to save it to
-    Firebase.firestore. The Toast comes with info whether the operation was successful or not.
+    /**
+     *Calls getCoordinatesFromAddress, creates a PlaceItem from entered data, and tries to save it
+     * to Firebase.firestore. The Toast comes with info whether the operation was successful or not.
      */
-    private fun createPlace(downloadUri: Uri) {
+    private fun createPlace(fileName: String) {
         val title = nameEdit.text.toString()
         val address = addressEdit.text.toString()
         val openingHours = openingHoursEdit.text.toString()
         val description = descriptionEdit.text.toString()
         val rating = ratingBar.rating
-
-
-
         val coordinates = getCoordinatesFromAddress(address)
-
 
         val place = PlaceItem(
             title = title,
@@ -214,37 +195,32 @@ class AddPlace : AppCompatActivity() {
             priceRange = priceRange,
             description = description,
             rating = rating,
-            imageUri = downloadUri.toString(),
+            imageFileName = fileName,
             latitude = coordinates?.get(0),
             longitude = coordinates?.get(1),
             userUID = auth.currentUser?.uid.toString(),
-            created = DateTimeFormatter
-                .ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")
-                .withZone(ZoneOffset.UTC)
-                .format(Instant.now())
+            created = fileName //It's the same as the filename, but, you know...
         )
 
         db.collection("places").add(place).addOnCompleteListener { task ->
             if(task.isSuccessful) {
-                Toast.makeText(this, "Place created", Toast.LENGTH_SHORT).show()
-                Log.d("!!!!", "createPlace successful")
-                goToPlaces()
-            } else {
-                Toast.makeText(this, "Place not created ${task.exception}",
+                Toast.makeText(this, getString(R.string.thrift_store_added),
                     Toast.LENGTH_SHORT).show()
-                Log.d("!!!!", "Place not created ${task.exception}")
+                Log.d("!!!!", "createPlace successful")
+            } else {
+                Toast.makeText(this, getString(
+                    R.string.thrift_store_not_added,
+                    task.exception.toString()
+                ), Toast.LENGTH_SHORT).show()
+                Log.d("!!!!", "createPlace unsuccessful ${task.exception}")
             }
         }
-
     }
 
 
-    /*
-    It seems like this only works on android api 26 or earlier. I should find a real solution!
-    Or perhaps it's the emulator acting up again.
-
-    Anyway, it tries to get the coordinates of currentAddress by using Geocoder.
-    If it succeeds, it returns the values as a List of Doubles. If not, null is returned.
+    /**
+     *This tries to get the coordinates of currentAddress by using Geocoder.
+     *If it succeeds, it returns the values as a List of Doubles. If not, null is returned.
      */
     private fun getCoordinatesFromAddress(currentAddress: String?): List<Double>? {
 
@@ -263,17 +239,19 @@ class AddPlace : AppCompatActivity() {
                 Log.d("!!!!", "Lat: $lat - Long: $long")
                 return listOf(lat, long)
             } else {
-                Toast.makeText(this, "No address found",
+                Toast.makeText(this, getString(
+                    R.string.no_address_found),
                     Toast.LENGTH_SHORT).show()
                 Log.d("!!!!", "No address")
                 return null
             }
         } catch(e: Exception) {
-            Toast.makeText(this, "Geocoder error: $e", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(
+                R.string.no_address_found
+            ), Toast.LENGTH_SHORT).show()
             Log.d("!!!!", e.toString())
             e.printStackTrace()
+            return null
         }
-        Log.d("!!!!", "How did we end up here? $currentAddress")
-        return null
     }
 }
