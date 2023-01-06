@@ -9,7 +9,7 @@
     <string name="address">Adress</string>
     <string name="picture_of_place">Bild på butik</string>
     <string name="name_of_store">Butikens namn</string>
-    <string name="description">Beskrivning</string>
+    <string name="description">Beskrivning (max 200 tecken)</string>
     <string name="save">Spara</string>
     <string name="cancel">Avbryt</string>
     <string name="street">Gatuadress</string>

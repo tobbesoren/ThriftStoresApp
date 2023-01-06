@@ -8,7 +8,7 @@
     <string name="address">Address</string>
     <string name="picture_of_place">Picture of place</string>
     <string name="name_of_store">Name of store</string>
-    <string name="description">Description</string>
+    <string name="description">Description (max 200 chars)</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="street">Street</string>
