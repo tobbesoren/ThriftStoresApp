@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LoppisApp</string>
+    <string name="log_in">Logga in</string>
+    <string name="create_user">Skapa användare</string>
+    <string name="e_mail">E-mejl</string>
+    <string name="password">Lösenord</string>
+    <string name="title">Butiksnamn</string>
+    <string name="address">Adress</string>
+    <string name="picture_of_place">Bild på butik</string>
+    <string name="name_of_store">Butikens namn</string>
+    <string name="description">Beskrivning</string>
+    <string name="save">Spara</string>
+    <string name="cancel">Avbryt</string>
+    <string name="street">Gatuadress</string>
+    <string name="postal_code">Postnummer</string>
+    <string name="city">Stad</string>
+    <string name="opening_hours">Öppettider:</string>
+    <string name="title_activity_maps">Karta</string>
+    <string name="pricing">Prisnivå</string>
+    <string name="categories">Kategorier</string>
+    <string name="map">Karta</string>
+    <string name="lat_long">Lat, long</string>
+    <string name="back">Tillbaka</string>
+    <string name="log_out">Logga ut</string>
+    <string name="select">Välj</string>
+    <string name="delete">Radera</string>
+    <string name="price_range">Prisnivå:</string>
+    <string name="select_image">Välj bild</string>
+
+    <string-array name="sortBy">
+        <item>Sort by name</item>
+        <item>Sort by rating</item>
+        <item>Sort by distance</item>
+        <item>Sort by latest</item>
+    </string-array>
+
+    <string-array name="selectView">
+        <item>View all thrift stores</item>
+        <item>View my thrift stores</item>
+    </string-array>
+
+    <string-array name="priceRange">
+        <item>Low prices</item>
+        <item>Medium prices</item>
+        <item>High prices</item>
+    </string-array>
+
+</resources>

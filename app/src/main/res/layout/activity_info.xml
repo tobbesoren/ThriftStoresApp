@@ -6,10 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".InfoActivity">
 
+    <TextView
+        android:id="@+id/PricingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/price_range"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoOpeningHoursTextView" />
+
     <ImageView
         android:id="@+id/infoImageView"
         android:layout_width="411dp"
         android:layout_height="239dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -33,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoPricingTextView" />
 
@@ -42,16 +53,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="6dp"
         android:text="@string/pricing"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoOpeningHoursTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/PricingTextView" />
 
     <TextView
         android:id="@+id/infoAdressTextView"
         android:layout_width="317dp"
         android:layout_height="20dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
         android:text="@string/address"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoTitleTextView" />
@@ -71,7 +83,7 @@
         android:layout_marginTop="12dp"
         android:text="@string/opening_hours"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoAdressTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/openingHoursTextView" />
 
     <TextView
         android:id="@+id/infoLatLongTextView"
@@ -96,10 +108,10 @@
 
     <TextView
         android:id="@+id/infoDescriptionTextView"
-        android:layout_width="314dp"
-        android:layout_height="163dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="24dp"
         android:text="@string/description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoRatingBar" />
@@ -124,4 +136,15 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/openingHoursTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/opening_hours"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoAdressTextView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

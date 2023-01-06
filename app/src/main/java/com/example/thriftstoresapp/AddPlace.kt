@@ -107,7 +107,12 @@ class AddPlace : AppCompatActivity() {
             Making sure we at least have a name and an address. If not, have a Toast.
              */
             if(nameEdit.text.isNotEmpty() && addressEdit.text.isNotEmpty()) {
-                uploadImage()
+
+                val fileName = getFileName()
+
+                createPlace(fileName)
+                uploadImage(fileName)
+
             } else {
                 Toast.makeText(this, "You must enter a title and an address.",
                     Toast.LENGTH_SHORT).show()
@@ -153,32 +158,30 @@ class AddPlace : AppCompatActivity() {
     This creates a StorageReference, calls createPlace() and, finally, tries to upload the selected
     image to firebase cloud storage.
      */
-    private fun uploadImage() {
 
-        val fileName = DateTimeFormatter
-            .ofPattern("yyyy-MM-dd HH:mm:ss")
-            .withZone(ZoneOffset.UTC)
-            .format(Instant.now())
+    /*
+    I will try to save the filename instead of the downloadUrl. Or perhaps both.Or maybe some
+    file ID.To make it possible to delete the image.
+     */
+    private fun uploadImage(fileName: String) {
 
         val storageReference = FirebaseStorage.getInstance()
             .getReference("images/$fileName")
 
-
-
         storageReference.putFile(imageUri).addOnSuccessListener {
-            storageReference.downloadUrl.addOnSuccessListener { downloadUri ->
-                /*
-                We call createPlace here, when the storageReference variable is created. Maybe I
-                should move this...
-                */
-                createPlace(downloadUri)
-            }
-            Toast.makeText(
-                this, "Successfully uploaded image",
+            Toast.makeText(this, "Successfully uploaded image",
                 Toast.LENGTH_SHORT).show()
+
         }.addOnFailureListener {
             Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun getFileName(): String {
+        return DateTimeFormatter
+            .ofPattern("yyyy-MM-dd HH:mm:ss")
+            .withZone(ZoneOffset.UTC)
+            .format(Instant.now())
     }
 
 
@@ -195,7 +198,7 @@ class AddPlace : AppCompatActivity() {
     Calls getCoordinatesFromAddress, creates a PlaceItem from entered data, and tries to save it to
     Firebase.firestore. The Toast comes with info whether the operation was successful or not.
      */
-    private fun createPlace(downloadUri: Uri) {
+    private fun createPlace(fileName: String) {
         val title = nameEdit.text.toString()
         val address = addressEdit.text.toString()
         val openingHours = openingHoursEdit.text.toString()
@@ -214,7 +217,7 @@ class AddPlace : AppCompatActivity() {
             priceRange = priceRange,
             description = description,
             rating = rating,
-            imageUri = downloadUri.toString(),
+            imageFileName = fileName,
             latitude = coordinates?.get(0),
             longitude = coordinates?.get(1),
             userUID = auth.currentUser?.uid.toString(),

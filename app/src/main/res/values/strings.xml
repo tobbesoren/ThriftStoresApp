@@ -14,7 +14,7 @@
     <string name="street">Street</string>
     <string name="postal_code">Postal code</string>
     <string name="city">City</string>
-    <string name="opening_hours">Opening hours</string>
+    <string name="opening_hours">Opening hours:</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="pricing">Pricing</string>
     <string name="categories">Categories</string>

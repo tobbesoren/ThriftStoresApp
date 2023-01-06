@@ -22,7 +22,7 @@ class InfoActivity : AppCompatActivity() {
     private lateinit var addressTextView: TextView
     private lateinit var ratingBar: RatingBar
     private lateinit var pricingTextView: TextView
-    private lateinit var categoriesTextView: TextView
+    private lateinit var openingHoursTextView: TextView
     private lateinit var descriptionTextView: TextView
     private lateinit var latLongTextview: TextView
 
@@ -45,7 +45,7 @@ class InfoActivity : AppCompatActivity() {
         addressTextView = findViewById(R.id.infoAdressTextView)
         ratingBar = findViewById(R.id.infoRatingBar)
         pricingTextView = findViewById(R.id.infoPricingTextView)
-        categoriesTextView = findViewById(R.id.infoOpeningHoursTextView)
+        openingHoursTextView = findViewById(R.id.infoOpeningHoursTextView)
         descriptionTextView = findViewById(R.id.infoDescriptionTextView)
         latLongTextview = findViewById(R.id.infoLatLongTextView)
 
@@ -56,16 +56,26 @@ class InfoActivity : AppCompatActivity() {
         titleTextView.text = LocalData.currentPlace?.title
         addressTextView.text = LocalData.currentPlace?.address
         ratingBar.rating = LocalData.currentPlace?.rating!!
+        pricingTextView.text = LocalData.currentPlace?.priceRange
+        openingHoursTextView.text = LocalData.currentPlace?.openingHours
         descriptionTextView.text = LocalData.currentPlace?.description
         latLongTextview.text = "lat: ${LocalData.currentPlace?.latitude}," +
                 "lng: ${LocalData.currentPlace?.longitude}"
 
         /*
-        Testing getting image from Glide
+        Getting image from Firebase firestore
          */
-        Glide.with(this)
-            .load(LocalData.currentPlace?.imageUri)
-            .into(storeImageView)
+
+        val storageReference = FirebaseStorage.getInstance()
+            .getReference("images/${LocalData.currentPlace!!.imageFileName}")
+
+        storageReference.downloadUrl.addOnSuccessListener { downloadUrl ->
+            Glide.with(this)
+                .load(downloadUrl)
+                .into(storeImageView)
+        }
+
+
 
 
         /*
@@ -92,21 +102,29 @@ class InfoActivity : AppCompatActivity() {
             val deleteButton = findViewById<Button>(R.id.infoDeleteButton)
             deleteButton.isVisible = true
 
+            /*
+            This is added to make it possible to delete the image. Not done yet!
+             */
+            //val storageReference = FirebaseStorage.getInstance().reference
+            //val imageToDeleteRef = storageReference.child(LocalData.currentPlace!!.imageFileName)
+            //------------------------------------------------------------------------------
+
             deleteButton.setOnClickListener {
                 val docToDelete = LocalData.currentPlace!!.id
                 if(docToDelete != null) {
                     db.collection("places").document(docToDelete).delete()
                         .addOnSuccessListener {
-                            LocalData.currentPlace = null //resets currentPlace
+                            LocalData.currentPlace = null //resets currentPlace, just to be safe!
                             Toast.makeText(this, "Place deleted",
                                 Toast.LENGTH_SHORT).show()
-                            goToPlaces()
+                            //goToPlaces()
                         }.addOnFailureListener {
                             Toast.makeText(this, "Couldn't delete place",
                                 Toast.LENGTH_SHORT).show()
-                            goToPlaces()
+                            //goToPlaces()
                         }
                 }
+                goToPlaces()
             }
         }
 
@@ -130,5 +148,9 @@ class InfoActivity : AppCompatActivity() {
         val intent = Intent(this, PlacesRecyclerViewActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun deleteImage() {
+
     }
 }
