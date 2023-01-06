@@ -33,7 +33,7 @@
         <item>Sortera efter butiksnamn</item>
         <item>Sortera efter betyg</item>
         <item>Sortera efter senast tillagda</item>
-        <item>Sortera efter avstånd</item>
+        <!--<item>Sortera efter avstånd</item>-->
     </string-array>
 
     <string-array name="selectView">

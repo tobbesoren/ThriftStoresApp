@@ -67,6 +67,7 @@ class InfoActivity : AppCompatActivity() {
         storageReference.downloadUrl.addOnSuccessListener { downloadUrl ->
             Glide.with(this)
                 .load(downloadUrl)
+                .centerCrop()
                 .into(storeImageView)
         }
 

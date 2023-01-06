@@ -51,6 +51,7 @@ class PlacesRecyclerViewAdapter(private val context : Context,
         storageReference.downloadUrl.addOnSuccessListener { downloadUrl ->
             Glide.with(context)
                 .load(downloadUrl)
+                .centerCrop()
                 .into(holder.placeImageView)
         }
 
