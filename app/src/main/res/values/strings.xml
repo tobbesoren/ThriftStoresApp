@@ -26,6 +26,7 @@
     <string name="delete">Delete</string>
     <string name="price_range">Price range:</string>
     <string name="select_image">Select image</string>
+    <string name="short_description">Short description</string>
 
 
     <!-- spinners -->
@@ -75,5 +76,6 @@
 
     <!-- strings set in code -->
     <string name="latLng">lat: %1$s lng: %2$s</string>
+
 
 </resources>

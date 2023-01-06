@@ -42,7 +42,7 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         //Loads places into LocalData.placeList.
-        loadPlaces(selectedView)
+        loadPlaces()
 
         //Sets up the log out button.
         val logOutButton = findViewById<Button>(R.id.placesLogOutButton)
@@ -63,7 +63,7 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
                                         position: Int,
                                         id: Long) {
                 sort = position
-                loadPlaces(selectedView)
+                loadPlaces()
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -83,7 +83,7 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
                                         position: Int,
                                         id: Long) {
                 selectedView = position
-                loadPlaces(selectedView)
+                loadPlaces()
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -122,7 +122,7 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
      *filtered by selectedView. When the data is downloaded, the list is sorted by calling sortList,
      *and setAdapter is called.
      */
-    private fun loadPlaces(selectedView: Int) {
+    private fun loadPlaces() {
         when(selectedView) {
             0 -> {
                 db.collection("places").get().addOnSuccessListener { documentSnapShot ->
@@ -170,7 +170,8 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
             1 -> LocalData.placeList.sortWith(compareByDescending { it.rating })
             2 -> {
                 val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter
-                    .ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")
+                    .ofPattern("yyyy-MM-dd HH:mm:ss")
+
                 LocalData.placeList.sortByDescending {
                     LocalDate.parse(it.created, dateTimeFormatter)
                 }
@@ -178,7 +179,7 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
                 LocalData.placeList.sortWith(compareByDescending { it.created })
             }
             //User place not implemented!
-            3 -> LocalData.placeList.sortWith(compareByDescending { it.distance })
+            //3 -> LocalData.placeList.sortWith(compareByDescending { it.distance })
         }
     }
 

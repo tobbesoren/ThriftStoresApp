@@ -27,6 +27,7 @@
     <string name="delete">Radera</string>
     <string name="price_range">Prisnivå:</string>
     <string name="select_image">Välj bild</string>
+    <string name="short_description">Kort beskrivning</string>
 
     <string-array name="sortBy">
         <item>Sortera efter butiksnamn</item>
