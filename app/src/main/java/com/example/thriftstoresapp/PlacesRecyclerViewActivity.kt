@@ -166,7 +166,7 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
     private fun sortList() {
         Log.d("!!!!", "sort: $sort, selectedView: $selectedView")
         when(sort) {
-            0 -> LocalData.placeList.sortWith(compareBy { it.title })
+            0 -> LocalData.placeList.sortWith(compareBy { it.title?.lowercase() })
             1 -> LocalData.placeList.sortWith(compareByDescending { it.rating })
             2 -> {
                 val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter
@@ -177,6 +177,7 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
 
                 LocalData.placeList.sortWith(compareByDescending { it.created })
             }
+            //User place not implemented!
             3 -> LocalData.placeList.sortWith(compareByDescending { it.distance })
         }
     }

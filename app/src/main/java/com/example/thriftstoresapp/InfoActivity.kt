@@ -119,7 +119,8 @@ class InfoActivity : AppCompatActivity() {
                 val docToDelete = LocalData.currentPlace!!.id
 
                 if (docToDelete != null) {
-                    Toast.makeText(this, "Deleting...", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.deleting),
+                        Toast.LENGTH_SHORT).show()
                     deletePlaceAndGoBack(docToDelete)
                     deleteImage(storageReference)
                     LocalData.currentPlace = null //resets currentPlace
@@ -136,12 +137,14 @@ class InfoActivity : AppCompatActivity() {
         db.collection("places").document(docToDelete).delete()
             .addOnSuccessListener {
                 LocalData.currentPlace = null //resets currentPlace, just to be safe!
-                Toast.makeText(this, "Thrift store deleted",
+                Toast.makeText(this, getString(R.string.thrift_store_deleted),
                     Toast.LENGTH_SHORT).show()
                 goToPlaces()
-            }.addOnFailureListener {
-                Toast.makeText(this, "Couldn't delete thrift store",
-                    Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener {e ->
+                Toast.makeText(this, getString(
+                    R.string.could_not_delete_thrift_store,
+                    e.toString()
+                ), Toast.LENGTH_SHORT).show()
                 goToPlaces()
             }
     }
@@ -152,10 +155,10 @@ class InfoActivity : AppCompatActivity() {
      */
     private fun deleteImage(imageToDeleteRef: StorageReference) {
         imageToDeleteRef.delete().addOnSuccessListener {
-            Toast.makeText(this, "Image deleted",
+            Toast.makeText(this, getString(R.string.image_deleted),
                 Toast.LENGTH_SHORT).show()
         }.addOnFailureListener {
-            Toast.makeText(this, "Couldn't delete image",
+            Toast.makeText(this, getString(R.string.could_not_delete_image),
                 Toast.LENGTH_SHORT).show()
         }
     }

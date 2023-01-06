@@ -42,13 +42,9 @@ class PlacesRecyclerViewAdapter(private val context : Context,
         holder.titleTextView.text = placeItem.title
         holder.addressTextView.text = placeItem.address
         holder.descriptionTextView.text = placeItem.description
-        //holder.placeImageView.setImageResource(placeItem.image)
         holder.ratingView.rating = placeItem.rating!!
 
-        /*
-        Testing getting image from Glide
-         */
-
+        //Using Glide to show image from Firebase storage
         val storageReference = FirebaseStorage.getInstance()
             .getReference("images/${placeItem.imageFileName}")
 
@@ -58,14 +54,7 @@ class PlacesRecyclerViewAdapter(private val context : Context,
                 .into(holder.placeImageView)
         }
 
-        /*Glide.with(context)
-            .load(placeItem.imageFileName)
-            .into(holder.placeImageView)*/
-
-
-        /*
-        When an item is clicked, InfoActivity is started.
-         */
+        //When an item is clicked, InfoActivity is started.
         holder.itemView.setOnClickListener {
             val intent = Intent(context, InfoActivity::class.java)
             LocalData.currentPlace = LocalData.placeList[position]
@@ -82,7 +71,7 @@ class PlacesRecyclerViewAdapter(private val context : Context,
     }
 
     /*
-    Binds the Views to variables.
+    Inner class defining the ViewHolder, setting layout Views to variables.
      */
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

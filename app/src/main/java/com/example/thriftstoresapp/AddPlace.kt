@@ -275,13 +275,11 @@ class AddPlace : AppCompatActivity() {
             }
         } catch(e: Exception) {
             Toast.makeText(this, getString(
-                R.string.geocoder_error,
-                e.toString()
+                R.string.no_address_found
             ), Toast.LENGTH_SHORT).show()
             Log.d("!!!!", e.toString())
             e.printStackTrace()
+            return null
         }
-        Log.d("!!!!", "How did we end up here? $currentAddress")
-        return null
     }
 }

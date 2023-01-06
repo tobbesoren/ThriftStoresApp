@@ -65,6 +65,13 @@
     <string name="no_address_found">Adressen kunde inte hittas</string>
     <string name="geocoder_error">Geocoder-fel: %1$s</string>
 
+    <!-- InfoActivity -->
+    <string name="deleting">Raderar...</string>
+    <string name="thrift_store_deleted">Loppis raderad</string>
+    <string name="could_not_delete_thrift_store">Kunde inte radera loppis: %1$s</string>
+    <string name="image_deleted">Bild raderad</string>
+    <string name="could_not_delete_image">Kunde inte radera bild: %1$s</string>
+
 
     <!-- strings set in code -->
     <string name="latLng">lat: %1$s lng: %2$s</string>

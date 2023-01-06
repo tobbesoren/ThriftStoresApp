@@ -66,6 +66,12 @@
     <string name="no_address_found">No address found</string>
     <string name="geocoder_error">Geocoder error: %1$s</string>
 
+    <!-- InfoActivity -->
+    <string name="deleting">Deleting...</string>
+    <string name="thrift_store_deleted">Thrift store deleted</string>
+    <string name="could_not_delete_thrift_store">Couldn\'t delete thrift store: %1$s</string>
+    <string name="image_deleted">Image deleted</string>
+    <string name="could_not_delete_image">Couldn\'t delete image: %1$s</string>
 
     <!-- strings set in code -->
     <string name="latLng">lat: %1$s lng: %2$s</string>
