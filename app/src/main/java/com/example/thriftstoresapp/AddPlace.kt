@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.core.view.isInvisible
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -99,6 +100,15 @@ class AddPlace : AppCompatActivity() {
         }
 
         /*
+        Setting up cancel-button, for those who had a change of heart.
+         */
+        val cancelButton = findViewById<Button>(R.id.cancelButton)
+        cancelButton.setOnClickListener {
+            Toast.makeText(this, "Oh no!", Toast.LENGTH_SHORT).show()
+            goToPlaces()
+        }
+
+        /*
         Setting up save-button
          */
         val saveButton = findViewById<Button>(R.id.saveButton)
@@ -111,22 +121,18 @@ class AddPlace : AppCompatActivity() {
                 val fileName = getFileName()
 
                 createPlace(fileName)
-                uploadImage(fileName)
+                uploadImageAndGoBack(fileName)
+                saveButton.visibility = View.INVISIBLE
+                cancelButton.visibility = View.INVISIBLE
 
             } else {
-                Toast.makeText(this, "You must enter a title and an address.",
+                Toast.makeText(this, "You must enter a store name and an address.",
                     Toast.LENGTH_SHORT).show()
             }
 
         }
 
-        /*
-        Setting up cancel-button, for those who had a change of heart.
-         */
-        val cancelButton = findViewById<Button>(R.id.cancelButton)
-        cancelButton.setOnClickListener {
-            goToPlaces()
-        }
+
     }
 
     /*
@@ -154,16 +160,11 @@ class AddPlace : AppCompatActivity() {
         }
     }
 
-    /*
-    This creates a StorageReference, calls createPlace() and, finally, tries to upload the selected
-    image to firebase cloud storage.
-     */
 
     /*
-    I will try to save the filename instead of the downloadUrl. Or perhaps both.Or maybe some
-    file ID.To make it possible to delete the image.
+    This uploads the image to firebase storage, and goes back to placesRecyclerView.
      */
-    private fun uploadImage(fileName: String) {
+    private fun uploadImageAndGoBack(fileName: String) {
 
         val storageReference = FirebaseStorage.getInstance()
             .getReference("images/$fileName")
@@ -171,9 +172,10 @@ class AddPlace : AppCompatActivity() {
         storageReference.putFile(imageUri).addOnSuccessListener {
             Toast.makeText(this, "Successfully uploaded image",
                 Toast.LENGTH_SHORT).show()
-
+            goToPlaces()
         }.addOnFailureListener {
             Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
+            goToPlaces()
         }
     }
 
@@ -229,13 +231,12 @@ class AddPlace : AppCompatActivity() {
 
         db.collection("places").add(place).addOnCompleteListener { task ->
             if(task.isSuccessful) {
-                Toast.makeText(this, "Place created", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Thrift store added", Toast.LENGTH_SHORT).show()
                 Log.d("!!!!", "createPlace successful")
-                goToPlaces()
             } else {
-                Toast.makeText(this, "Place not created ${task.exception}",
+                Toast.makeText(this, "Thrift store not added ${task.exception}",
                     Toast.LENGTH_SHORT).show()
-                Log.d("!!!!", "Place not created ${task.exception}")
+                Log.d("!!!!", "createPlace unsuccessful ${task.exception}")
             }
         }
 

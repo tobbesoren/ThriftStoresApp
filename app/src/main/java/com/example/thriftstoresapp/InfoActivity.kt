@@ -15,9 +15,7 @@ import com.google.firebase.storage.StorageReference
 
 class InfoActivity : AppCompatActivity() {
 
-    /*
-    Declare variables to hold the Views.
-     */
+    //Declare variables to hold the Views.
     private lateinit var storeImageView: ImageView
     private lateinit var titleTextView: TextView
     private lateinit var addressTextView: TextView
@@ -27,9 +25,8 @@ class InfoActivity : AppCompatActivity() {
     private lateinit var descriptionTextView: TextView
     private lateinit var latLongTextview: TextView
 
-    /*
-    Declare and initialize variables for database and login.
-     */
+
+    //Declare and initialize variables for database and login.
     private val db = Firebase.firestore
     private val currentUser = Firebase.auth.currentUser?.uid.toString()
 
@@ -38,9 +35,8 @@ class InfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
 
-        /*
-        Some lateinits we promised to make.
-         */
+
+        //Some lateinits we promised to make.
         storeImageView = findViewById(R.id.infoImageView)
         titleTextView = findViewById(R.id.infoTitleTextView)
         addressTextView = findViewById(R.id.infoAdressTextView)
@@ -50,74 +46,38 @@ class InfoActivity : AppCompatActivity() {
         descriptionTextView = findViewById(R.id.infoDescriptionTextView)
         latLongTextview = findViewById(R.id.infoLatLongTextView)
 
-
-        /*
-        Getting the data from the currentPlace to the Views.
-         */
+        //Getting the data from the currentPlace to the Views.
         titleTextView.text = LocalData.currentPlace?.title
         addressTextView.text = LocalData.currentPlace?.address
         ratingBar.rating = LocalData.currentPlace?.rating!!
         pricingTextView.text = LocalData.currentPlace?.priceRange
         openingHoursTextView.text = LocalData.currentPlace?.openingHours
         descriptionTextView.text = LocalData.currentPlace?.description
-        latLongTextview.text = getString(R.string.latLng,
+        latLongTextview.text = getString(
+            R.string.latLng,
             LocalData.currentPlace?.latitude.toString(),
-            LocalData.currentPlace?.longitude.toString())
-        /*
-        Getting image from Firebase firestore
-         */
+            LocalData.currentPlace?.longitude.toString()
+        )
 
+        //Getting storage reference for image
         val storageReference = FirebaseStorage.getInstance()
             .getReference("images/${LocalData.currentPlace!!.imageFileName}")
 
+        //Setting the image to storeImageView
         storageReference.downloadUrl.addOnSuccessListener { downloadUrl ->
             Glide.with(this)
                 .load(downloadUrl)
                 .into(storeImageView)
         }
 
+        //This function checks if the PlaceItem has lat and lng: If so, it enables map button
+        setUpMapButton()
 
+        //This function checks if the currentUser is the one who created the place. If so, it
+        //enables the delete button.
+        setUpDeleteButton(storageReference)
 
-
-        /*
-        Checking if the currentPlace has latitude and longitude. If it does: sets up the map-button
-        and makes it visible and clickable.
-         */
-        if(LocalData.currentPlace!!.latitude != null && LocalData.currentPlace!!.longitude != null) {
-            val mapButton = findViewById<Button>(R.id.infoMapButton)
-            mapButton.isVisible = true
-            mapButton.setOnClickListener {
-                val intent = Intent(this, MapsActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-        }
-
-
-        /*
-        Checks if the currentPlace was added to the database by the current user. If it was: Sets up
-        the delete-button and makes it clickable, allowing the user to delete the currentPlace from
-        the database, and the corresponding image by calling deletePlace and deleteImage.
-        Also calls goToPlaces.
-         */
-        if(LocalData.currentPlace!!.userUID == currentUser) {
-            val deleteButton = findViewById<Button>(R.id.infoDeleteButton)
-            deleteButton.isVisible = true
-            deleteButton.setOnClickListener {
-                val docToDelete = LocalData.currentPlace!!.id
-
-                if(docToDelete != null) {
-                    deletePlace(docToDelete)
-                    deleteImage(storageReference)
-                }
-                goToPlaces()
-            }
-        }
-
-
-        /*
-        Sets up the back-button. Starts PlacesRecyclerViewActivity.
-         */
+        //Sets up the back-button. Starts PlacesRecyclerViewActivity.
         val backButton = findViewById<Button>(R.id.infoBackButton)
         backButton.setOnClickListener{
             LocalData.currentPlace = null //resets currentPlace
@@ -127,19 +87,62 @@ class InfoActivity : AppCompatActivity() {
 
 
     /*
+    Checking if the currentPlace has latitude and longitude. If it does: sets up the map-button
+    and makes it visible and clickable.
+    */
+    private fun setUpMapButton() {
+        if (LocalData.currentPlace!!.latitude != null &&
+            LocalData.currentPlace!!.longitude != null
+        ) {
+            val mapButton = findViewById<Button>(R.id.infoMapButton)
+            mapButton.isVisible = true
+            mapButton.setOnClickListener {
+                val intent = Intent(this, MapsActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
+    }
+
+
+    /*
+    Checks if the currentPlace was added to the database by the current user. If it was: Sets up
+    the delete-button and makes it clickable, allowing the user to delete the currentPlace from
+    the database, and the corresponding image by calling deletePlace and deleteImage.
+    Also calls goToPlaces.
+    */
+    private fun setUpDeleteButton(storageReference: StorageReference) {
+        if (LocalData.currentPlace!!.userUID == currentUser) {
+            val deleteButton = findViewById<Button>(R.id.infoDeleteButton)
+            deleteButton.isVisible = true
+            deleteButton.setOnClickListener {
+                val docToDelete = LocalData.currentPlace!!.id
+
+                if (docToDelete != null) {
+                    Toast.makeText(this, "Deleting...", Toast.LENGTH_SHORT).show()
+                    deletePlaceAndGoBack(docToDelete)
+                    deleteImage(storageReference)
+                    LocalData.currentPlace = null //resets currentPlace
+                }
+            }
+        }
+    }
+
+
+    /*
     Deletes the place from the database. Takes documentID as argument (a String).
      */
-    private fun deletePlace(docToDelete: String) {
+    private fun deletePlaceAndGoBack(docToDelete: String) {
         db.collection("places").document(docToDelete).delete()
             .addOnSuccessListener {
                 LocalData.currentPlace = null //resets currentPlace, just to be safe!
-                Toast.makeText(this, "Place deleted",
+                Toast.makeText(this, "Thrift store deleted",
                     Toast.LENGTH_SHORT).show()
-                //goToPlaces()
+                goToPlaces()
             }.addOnFailureListener {
-                Toast.makeText(this, "Couldn't delete place",
+                Toast.makeText(this, "Couldn't delete thrift store",
                     Toast.LENGTH_SHORT).show()
-                //goToPlaces()
+                goToPlaces()
             }
     }
 
@@ -149,10 +152,10 @@ class InfoActivity : AppCompatActivity() {
      */
     private fun deleteImage(imageToDeleteRef: StorageReference) {
         imageToDeleteRef.delete().addOnSuccessListener {
-            Toast.makeText(this, "Image successfully deleted",
+            Toast.makeText(this, "Image deleted",
                 Toast.LENGTH_SHORT).show()
         }.addOnFailureListener {
-            Toast.makeText(this, "Image deletion failed",
+            Toast.makeText(this, "Couldn't delete image",
                 Toast.LENGTH_SHORT).show()
         }
     }
@@ -167,6 +170,4 @@ class InfoActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
-
-
 }
