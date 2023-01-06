@@ -86,10 +86,10 @@ class InfoActivity : AppCompatActivity() {
     }
 
 
-    /*
-    Checking if the currentPlace has latitude and longitude. If it does: sets up the map-button
-    and makes it visible and clickable.
-    */
+    /**
+     *Checking if the currentPlace has latitude and longitude. If it does: sets up the map-button
+     *and makes it visible and clickable.
+     */
     private fun setUpMapButton() {
         if (LocalData.currentPlace!!.latitude != null &&
             LocalData.currentPlace!!.longitude != null
@@ -105,12 +105,11 @@ class InfoActivity : AppCompatActivity() {
     }
 
 
-    /*
-    Checks if the currentPlace was added to the database by the current user. If it was: Sets up
-    the delete-button and makes it clickable, allowing the user to delete the currentPlace from
-    the database, and the corresponding image by calling deletePlace and deleteImage.
-    Also calls goToPlaces.
-    */
+    /**
+     *Checks if the currentPlace was added to the database by the current user. If it was: Sets up
+     *the delete-button and makes it clickable, allowing the user to delete the currentPlace from
+     *the database, and the corresponding image by calling deletePlace and deleteImage.
+     */
     private fun setUpDeleteButton(storageReference: StorageReference) {
         if (LocalData.currentPlace!!.userUID == currentUser) {
             val deleteButton = findViewById<Button>(R.id.infoDeleteButton)
@@ -130,8 +129,8 @@ class InfoActivity : AppCompatActivity() {
     }
 
 
-    /*
-    Deletes the place from the database. Takes documentID as argument (a String).
+    /**
+     *Deletes the PlaceItem from the database. Takes documentID as argument (a String).
      */
     private fun deletePlaceAndGoBack(docToDelete: String) {
         db.collection("places").document(docToDelete).delete()
@@ -150,8 +149,8 @@ class InfoActivity : AppCompatActivity() {
     }
 
 
-    /*
-    Deletes image. Takes the StorageReference to the image as argument.
+    /**
+     *Deletes image. Takes the StorageReference to the image as argument.
      */
     private fun deleteImage(imageToDeleteRef: StorageReference) {
         imageToDeleteRef.delete().addOnSuccessListener {
@@ -164,9 +163,9 @@ class InfoActivity : AppCompatActivity() {
     }
 
 
-    /*
-    The goToPlaces-function never lets you down when you want to go to
-    PlacesRecyclerViewActivity.
+    /**
+     *The goToPlaces-function never lets you down when you want to go to
+     *PlacesRecyclerViewActivity.
      */
     private fun goToPlaces() {
         val intent = Intent(this, PlacesRecyclerViewActivity::class.java)

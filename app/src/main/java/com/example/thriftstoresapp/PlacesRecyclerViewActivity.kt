@@ -29,8 +29,8 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
 
     //Declare and initialize the variables for filtering and sorting the items of the recyclerView.
     //By default, we show all places and sort them by name.
-    var sort = 1
-    var selectedView = 1
+    var sort = 0
+    var selectedView = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,8 +99,8 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
     }
 
 
-    /*
-    Starts AddPlaceActivity
+    /**
+     *Starts AddPlaceActivity
      */
     private fun goToAddPlace() {
         val intent = Intent(this, AddPlace::class.java)
@@ -108,8 +108,8 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
     }
 
 
-    /*
-    Starts MainActivity
+    /**
+     *Starts MainActivity
      */
     private fun goToLogIn() {
         val intent = Intent(this, MainActivity::class.java)
@@ -117,10 +117,10 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
     }
 
 
-    /*
-    Loads places from Firebase.firestore into LocalData.placeList by using makeList. The data is
-    filtered by selectedView. When the data is downloaded, the list is sorted by calling sortList,
-    and setAdapter is called.
+    /**
+     *Loads places from Firebase.firestore into LocalData.placeList by using makeList. The data is
+     *filtered by selectedView. When the data is downloaded, the list is sorted by calling sortList,
+     *and setAdapter is called.
      */
     private fun loadPlaces(selectedView: Int) {
         when(selectedView) {
@@ -143,8 +143,8 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
     }
 
 
-    /*
-    Makes a list of PlaceItems from the data downloaded from Firebase.firestore.
+    /**
+     *Makes a list of PlaceItems from the data downloaded from Firebase.firestore.
      */
     private fun makeList(documentSnapShot: QuerySnapshot) {
         LocalData.placeList.clear()
@@ -159,9 +159,9 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
     }
 
 
-    /*
-    Sorts the LocalData.placeList by the method in the sort-variable. The value of sort is a string,
-    maybe I should use enum instead?
+    /**
+     *Sorts the LocalData.placeList by the method in the sort-variable. The value of sort is a string,
+     *maybe I should use enum instead?
      */
     private fun sortList() {
         Log.d("!!!!", "sort: $sort, selectedView: $selectedView")
@@ -183,8 +183,8 @@ class PlacesRecyclerViewActivity : AppCompatActivity() {
     }
 
 
-    /*
-    Sets the adapter for the recyclerView.
+    /**
+     *Sets the adapter for the recyclerView.
      */
     private fun setAdapter() {
         val adapter = PlacesRecyclerViewAdapter(this, LocalData.placeList)

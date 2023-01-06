@@ -21,9 +21,7 @@ import java.time.format.DateTimeFormatter
 
 class AddPlace : AppCompatActivity() {
 
-    /*
-    Declaring variables for the Views.
-     */
+    //Declaring variables for the Views.
     private lateinit var nameEdit: EditText
     private lateinit var addressEdit: EditText
     private lateinit var openingHoursEdit: EditText
@@ -31,32 +29,24 @@ class AddPlace : AppCompatActivity() {
     private lateinit var ratingBar: RatingBar
     private lateinit var shopImageView: ImageView
 
-    /*
-    Lateinit price range.
-     */
+    //Lateinit price range.
     lateinit var priceRange: String
 
-
-    /*
-    Will hold the Uri to the selected image.
-     */
+    //Will hold the Uri to the selected image.
     private lateinit var imageUri: Uri
 
-    /*
-    Declaring variables for login and database.
-     */
+    //Declaring variables for login and database.
     private val auth = Firebase.auth
     private val db = Firebase.firestore
 
-
-
+    /**
+     * Sets up layoutViews, buttons and spinner
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_place)
 
-        /*
-        Some lateinit:ing (it IS a word!)
-         */
+        //Some lateinit:ing (it IS a word!)
         nameEdit = findViewById(R.id.nameEditText)
         addressEdit = findViewById(R.id.addressEditText)
         openingHoursEdit = findViewById(R.id.openingHoursEditText)
@@ -64,15 +54,14 @@ class AddPlace : AppCompatActivity() {
         ratingBar = findViewById(R.id.ratingBarEdit)
         shopImageView = findViewById(R.id.shopImageView)
 
+        //Adds the default image
         val defaultDrawableResourceId = R.drawable.default_image
         imageUri = Uri.parse(
             ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
                     packageName + "/" + defaultDrawableResourceId)
-
         shopImageView.setImageURI(imageUri)
 
-
-
+        //Sets up price range Spinner
         val priceRangeOptions = resources.getStringArray(R.array.priceRange)
         val priceRangeSpinner = findViewById<Spinner>(R.id.priceRangeSpinner)
         val priceRangeAdapter = ArrayAdapter(this,
@@ -90,54 +79,41 @@ class AddPlace : AppCompatActivity() {
             }
         }
 
-
-        /*
-        Setting up select image-button.
-         */
+        //Setting up select image-button.
         val selectImageButton = findViewById<Button>(R.id.selectImageButton)
         selectImageButton.setOnClickListener {
             selectImage()
         }
 
-        /*
-        Setting up cancel-button, for those who had a change of heart.
-         */
+        //Setting up cancel-button, for those who had a change of heart.
         val cancelButton = findViewById<Button>(R.id.cancelButton)
         cancelButton.setOnClickListener {
             goToPlaces()
         }
 
-        /*
-        Setting up save-button
-         */
+        //Setting up save-button
         val saveButton = findViewById<Button>(R.id.saveButton)
         saveButton.setOnClickListener {
-            /*
-            Making sure we at least have a name and an address. If not, have a Toast.
-             */
-            if(nameEdit.text.isNotEmpty() && addressEdit.text.isNotEmpty()) {
 
+            //Making sure we at least have a name and an address. If not, have a Toast.
+            if(nameEdit.text.isNotEmpty() && addressEdit.text.isNotEmpty()) {
                 val fileName = getFileName()
 
                 createPlace(fileName)
                 uploadImageAndGoBack(fileName)
                 saveButton.visibility = View.INVISIBLE
                 cancelButton.visibility = View.INVISIBLE
-
             } else {
                 Toast.makeText(this, getString(R.string.enter_store_and_address),
                     Toast.LENGTH_SHORT).show()
             }
-
         }
-
-
     }
 
-    /*
-    Lets the user select an image for the place. I'm using deprecated methods to select and upload
-    images, but sometimes you gotta work with what you (kinda) understands. This should most
-    definitely be updated.
+    /**
+     *Lets the user select an image for the place. I'm using deprecated methods to select and upload
+     *images, but sometimes you gotta work with what you (kinda) understands. This should most
+     *definitely be updated.
      */
     private fun selectImage() {
         val intent = Intent()
@@ -147,8 +123,9 @@ class AddPlace : AppCompatActivity() {
         startActivityForResult(intent, 100)
     }
 
-    /*
-    More deprecated stuff!
+    /**
+     *More deprecated stuff!
+     *Sets the imageUri to the image returned from selectImage.
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -160,8 +137,8 @@ class AddPlace : AppCompatActivity() {
     }
 
 
-    /*
-    This uploads the image to firebase storage, and goes back to placesRecyclerView.
+    /**
+     *This uploads the image to firebase storage, and goes back to placesRecyclerView.
      */
     private fun uploadImageAndGoBack(fileName: String) {
 
@@ -179,6 +156,9 @@ class AddPlace : AppCompatActivity() {
         }
     }
 
+    /**
+     * Returns a filename for the image, using a timestamp
+     */
     private fun getFileName(): String {
         return DateTimeFormatter
             .ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -187,8 +167,8 @@ class AddPlace : AppCompatActivity() {
     }
 
 
-    /*
-    Starts PlacesRecyclerViewActivity.
+    /**
+     *Starts PlacesRecyclerViewActivity.
      */
     private fun goToPlaces() {
         val intent = Intent(this, PlacesRecyclerViewActivity::class.java)
@@ -196,9 +176,9 @@ class AddPlace : AppCompatActivity() {
         finish()
     }
 
-    /*
-    Calls getCoordinatesFromAddress, creates a PlaceItem from entered data, and tries to save it to
-    Firebase.firestore. The Toast comes with info whether the operation was successful or not.
+    /**
+     *Calls getCoordinatesFromAddress, creates a PlaceItem from entered data, and tries to save it
+     * to Firebase.firestore. The Toast comes with info whether the operation was successful or not.
      */
     private fun createPlace(fileName: String) {
         val title = nameEdit.text.toString()
@@ -206,11 +186,7 @@ class AddPlace : AppCompatActivity() {
         val openingHours = openingHoursEdit.text.toString()
         val description = descriptionEdit.text.toString()
         val rating = ratingBar.rating
-
-
-
         val coordinates = getCoordinatesFromAddress(address)
-
 
         val place = PlaceItem(
             title = title,
@@ -223,10 +199,7 @@ class AddPlace : AppCompatActivity() {
             latitude = coordinates?.get(0),
             longitude = coordinates?.get(1),
             userUID = auth.currentUser?.uid.toString(),
-            created = DateTimeFormatter
-                .ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")
-                .withZone(ZoneOffset.UTC)
-                .format(Instant.now())
+            created = fileName //It's the same as the filename, but, you know...
         )
 
         db.collection("places").add(place).addOnCompleteListener { task ->
@@ -242,13 +215,12 @@ class AddPlace : AppCompatActivity() {
                 Log.d("!!!!", "createPlace unsuccessful ${task.exception}")
             }
         }
-
     }
 
 
-    /*
-    This tries to get the coordinates of currentAddress by using Geocoder.
-    If it succeeds, it returns the values as a List of Doubles. If not, null is returned.
+    /**
+     *This tries to get the coordinates of currentAddress by using Geocoder.
+     *If it succeeds, it returns the values as a List of Doubles. If not, null is returned.
      */
     private fun getCoordinatesFromAddress(currentAddress: String?): List<Double>? {
 

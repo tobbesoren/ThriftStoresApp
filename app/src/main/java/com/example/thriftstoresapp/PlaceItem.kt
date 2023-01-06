@@ -2,8 +2,8 @@ package com.example.thriftstoresapp
 
 import com.google.firebase.firestore.DocumentId
 
-/*
-Holds the data for the places.
+/**
+ *Holds the data for the places.
  */
 data class PlaceItem (@DocumentId val id : String? = null,
                       val title: String? = "",

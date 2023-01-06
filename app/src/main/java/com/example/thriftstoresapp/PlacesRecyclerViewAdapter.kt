@@ -13,8 +13,8 @@ import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
 
 
-/*
-The Adapter for the PlacesRecyclerView.
+/**
+ *The Adapter for the PlacesRecyclerView.
  */
 class PlacesRecyclerViewAdapter(private val context : Context,
                                 private val places : List<PlaceItem>)
@@ -23,17 +23,17 @@ class PlacesRecyclerViewAdapter(private val context : Context,
     private var layoutInflater = LayoutInflater.from(context)
 
 
-
-    /*
-    Returns a ViewHolder.
+    /**
+     *Returns a ViewHolder.
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = layoutInflater.inflate(R.layout.list_item, parent, false)
         return ViewHolder(itemView)
     }
 
-    /*
-    Sets the data to the views. Also, adds setOnClickListener to make the item clickable.
+
+    /**
+     *Sets the data to the views. Also, adds setOnClickListener to make the item clickable.
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
@@ -63,15 +63,17 @@ class PlacesRecyclerViewAdapter(private val context : Context,
 
     }
 
-    /*
-    Needed for binding ViewHolders. Returns the length of places (a List).
+
+    /**
+     *Needed for binding ViewHolders. Returns the length of places (a List).
      */
     override fun getItemCount(): Int {
         return places.size
     }
 
-    /*
-    Inner class defining the ViewHolder, setting layout Views to variables.
+
+    /**
+     *Inner class defining the ViewHolder, setting layout Views to variables.
      */
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
