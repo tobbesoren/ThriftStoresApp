@@ -55,7 +55,16 @@
     <string name="to_log_in">Ange e-post och lösenord för att logga in</string>
     <string name="user_logged_in">Användare inloggad</string>
     <string name="user_not_logged_in">Kunde inte logga in: %1$s</string>
-    
+
+    <!-- AddPlace -->
+    <string name="enter_store_and_address">Du måste ange butiksnamn och adress</string>
+    <string name="successfully_uploaded_image">Bilden har laddats upp</string>
+    <string name="failed_to_upload_image">Kunde inte ladda upp bild</string>
+    <string name="thrift_store_added">Loppis tillagd</string>
+    <string name="thrift_store_not_added">Kunde inte lägga till loppis: %1$s</string>
+    <string name="no_address_found">Adressen kunde inte hittas</string>
+    <string name="geocoder_error">Geocoder-fel: %1$s</string>
+
 
     <!-- strings set in code -->
     <string name="latLng">lat: %1$s lng: %2$s</string>

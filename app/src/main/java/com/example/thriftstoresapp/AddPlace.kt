@@ -125,7 +125,7 @@ class AddPlace : AppCompatActivity() {
                 cancelButton.visibility = View.INVISIBLE
 
             } else {
-                Toast.makeText(this, "You must enter a store name and an address.",
+                Toast.makeText(this, getString(R.string.enter_store_and_address),
                     Toast.LENGTH_SHORT).show()
             }
 
@@ -169,11 +169,12 @@ class AddPlace : AppCompatActivity() {
             .getReference("images/$fileName")
 
         storageReference.putFile(imageUri).addOnSuccessListener {
-            Toast.makeText(this, "Successfully uploaded image",
+            Toast.makeText(this, getString(R.string.successfully_uploaded_image),
                 Toast.LENGTH_SHORT).show()
             goToPlaces()
         }.addOnFailureListener {
-            Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.failed_to_upload_image),
+                Toast.LENGTH_SHORT).show()
             goToPlaces()
         }
     }
@@ -230,11 +231,14 @@ class AddPlace : AppCompatActivity() {
 
         db.collection("places").add(place).addOnCompleteListener { task ->
             if(task.isSuccessful) {
-                Toast.makeText(this, "Thrift store added", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.thrift_store_added),
+                    Toast.LENGTH_SHORT).show()
                 Log.d("!!!!", "createPlace successful")
             } else {
-                Toast.makeText(this, "Thrift store not added ${task.exception}",
-                    Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(
+                    R.string.thrift_store_not_added,
+                    task.exception.toString()
+                ), Toast.LENGTH_SHORT).show()
                 Log.d("!!!!", "createPlace unsuccessful ${task.exception}")
             }
         }
@@ -243,10 +247,7 @@ class AddPlace : AppCompatActivity() {
 
 
     /*
-    It seems like this only works on android api 26 or earlier. I should find a real solution!
-    Or perhaps it's the emulator acting up again.
-
-    Anyway, it tries to get the coordinates of currentAddress by using Geocoder.
+    This tries to get the coordinates of currentAddress by using Geocoder.
     If it succeeds, it returns the values as a List of Doubles. If not, null is returned.
      */
     private fun getCoordinatesFromAddress(currentAddress: String?): List<Double>? {
@@ -266,13 +267,17 @@ class AddPlace : AppCompatActivity() {
                 Log.d("!!!!", "Lat: $lat - Long: $long")
                 return listOf(lat, long)
             } else {
-                Toast.makeText(this, "No address found",
+                Toast.makeText(this, getString(
+                    R.string.no_address_found),
                     Toast.LENGTH_SHORT).show()
                 Log.d("!!!!", "No address")
                 return null
             }
         } catch(e: Exception) {
-            Toast.makeText(this, "Geocoder error: $e", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(
+                R.string.geocoder_error,
+                e.toString()
+            ), Toast.LENGTH_SHORT).show()
             Log.d("!!!!", e.toString())
             e.printStackTrace()
         }

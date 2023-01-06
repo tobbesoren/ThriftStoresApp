@@ -57,6 +57,15 @@
     <string name="user_logged_in">User logged in</string>
     <string name="user_not_logged_in">User not logged in: %1$s</string>
 
+    <!-- AddPlace -->
+    <string name="enter_store_and_address">You must enter a store name and an address</string>
+    <string name="successfully_uploaded_image">Successfully uploaded image</string>
+    <string name="failed_to_upload_image">Failed to upload image</string>
+    <string name="thrift_store_added">Thrift store added</string>
+    <string name="thrift_store_not_added">Thrift store not added: %1$s</string>
+    <string name="no_address_found">No address found</string>
+    <string name="geocoder_error">Geocoder error: %1$s</string>
+
 
     <!-- strings set in code -->
     <string name="latLng">lat: %1$s lng: %2$s</string>
